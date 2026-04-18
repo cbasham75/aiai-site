@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AIAI — Your App, Built by AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;--surface:#111111;--surface2:#181818;--border:#232323;--border2:#2e2e2e;
+  --text:#f0ece4;--muted:#7a7570;--accent:#e8a628;--accent2:#f0c060;--accent-dim:#3a2a0a;
+  --red:#e85050;--green:#4ecb71;--radius:12px;
+  --font:'Syne',sans-serif;--mono:'DM Mono',monospace;--serif:'Instrument Serif',serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:0.04}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+nav.scrolled{background:rgba(10,10,10,.92);border-color:var(--border);backdrop-filter:blur(12px)}
+.logo{font-size:22px;font-weight:800;letter-spacing:-.5px;color:var(--text)}
+.logo span{color:var(--accent)}
+.nav-pill{font-size:13px;font-weight:600;letter-spacing:.04em;padding:9px 20px;border-radius:100px;background:var(--accent);color:#0a0a0a;cursor:pointer;border:none;transition:transform .15s,opacity .15s}
+.nav-pill:hover{opacity:.85;transform:scale(1.02)}
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 48px 80px;text-align:center;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(232,166,40,.06) 0%,transparent 70%)}
+.hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:8px}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';flex:1;max-width:40px;height:1px;background:var(--accent);opacity:.5}
+h1{font-size:clamp(52px,7vw,96px);font-weight:800;line-height:.95;letter-spacing:-3px;margin-bottom:32px}
+h1 .serif{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--accent)}
+.hero-sub{font-size:18px;color:var(--muted);max-width:520px;line-height:1.6;margin-bottom:56px;font-weight:400}
+.cta-big{font-size:17px;font-weight:700;letter-spacing:.02em;padding:18px 48px;border-radius:100px;background:var(--accent);color:#0a0a0a;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.cta-big::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 50%)}
+.cta-big:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(232,166,40,.35)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;max-width:900px;width:100%;margin:80px auto 0}
+.step{background:var(--surface);border:1px solid var(--border);padding:28px 24px;position:relative}
+.step:first-child{border-radius:var(--radius) 0 0 var(--radius)}
+.step:last-child{border-radius:0 var(--radius) var(--radius) 0}
+.step-num{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;margin-bottom:12px}
+.step-title{font-size:15px;font-weight:700;margin-bottom:6px}
+.step-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.step::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);color:var(--accent);font-size:16px;z-index:1}
+.step:last-child::after{display:none}
+section{max-width:840px;margin:0 auto;padding:80px 48px}
+.section-label{font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;margin-bottom:24px}
+.section-title{font-size:36px;font-weight:800;letter-spacing:-1px;margin-bottom:8px}
+.section-sub{font-size:15px;color:var(--muted);margin-bottom:40px;line-height:1.6}
+.progress-track{height:3px;background:var(--surface2);border-radius:2px;margin-bottom:48px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .5s ease;width:0%}
+.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:32px}
+.contact-card h3{font-size:18px;font-weight:700;margin-bottom:6px}
+.contact-card p{font-size:14px;color:var(--muted);margin-bottom:24px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.05em;font-family:var(--mono)}
+.form-group input{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:12px 16px;font-family:var(--font);font-size:15px;color:var(--text);outline:none;transition:border-color .2s}
+.form-group input::placeholder{color:var(--muted)}
+.form-group input:focus{border-color:rgba(232,166,40,.5)}
+.chat-area{display:flex;flex-direction:column;gap:16px;min-height:200px;margin-bottom:32px}
+.msg{display:flex;gap:12px;align-items:flex-start;animation:fadeUp .4s ease forwards;opacity:0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.msg.user{flex-direction:row-reverse}
+.avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.avatar.ai{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(232,166,40,.3)}
+.avatar.human{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.bubble{max-width:75%;padding:14px 18px;border-radius:16px;font-size:15px;line-height:1.6}
+.msg.ai .bubble{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:4px 16px 16px 16px}
+.msg.user .bubble{background:var(--accent-dim);border:1px solid rgba(232,166,40,.25);color:var(--text);border-radius:16px 4px 16px 16px}
+.typing{display:flex;gap:4px;align-items:center;padding:14px 18px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:.4;animation:blink 1.2s ease-in-out infinite}
+.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
+.input-row{display:flex;gap:12px;align-items:flex-end}
+textarea.chat-input{flex:1;resize:none;background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:14px 18px;font-family:var(--font);font-size:15px;color:var(--text);outline:none;line-height:1.5;min-height:52px;max-height:180px;transition:border-color .2s}
+textarea.chat-input::placeholder{color:var(--muted)}
+textarea.chat-input:focus{border-color:rgba(232,166,40,.5)}
+.send-btn{width:52px;height:52px;border-radius:12px;border:none;background:var(--accent);color:#0a0a0a;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,opacity .15s;flex-shrink:0}
+.send-btn:hover{opacity:.85;transform:scale(1.05)}
+.send-btn:disabled{opacity:.3;cursor:not-allowed;transform:none}
+.upload-zone{border:1.5px dashed var(--border2);border-radius:var(--radius);padding:32px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;margin-bottom:24px}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--accent);background:rgba(232,166,40,.04)}
+.file-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.file-chip{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--mono)}
+.file-chip .file-name{flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-chip .remove{color:var(--muted);cursor:pointer;font-size:16px;line-height:1}
+.file-chip .remove:hover{color:var(--red)}
+.quick-replies{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.qr-chip{font-size:13px;padding:7px 14px;border-radius:100px;border:1px solid var(--border2);color:var(--muted);cursor:pointer;transition:border-color .15s,color .15s,background .15s;background:transparent;font-family:var(--font)}
+.qr-chip:hover{border-color:var(--accent);color:var(--accent);background:rgba(232,166,40,.06)}
+.action-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.btn-ghost{font-size:13px;font-weight:600;padding:10px 20px;border-radius:8px;border:1px solid var(--border2);color:var(--muted);cursor:pointer;background:transparent;font-family:var(--font);transition:color .15s}
+.btn-ghost:hover{color:var(--text)}
+.btn-accent{font-size:13px;font-weight:700;padding:10px 24px;border-radius:8px;border:none;background:var(--accent);color:#0a0a0a;cursor:pointer;font-family:var(--font);transition:opacity .15s,transform .15s}
+.btn-accent:hover{opacity:.85;transform:scale(1.02)}
+.quote-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px;margin:32px 0;position:relative;overflow:hidden}
+.quote-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.quote-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px}
+.quote-label{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;margin-bottom:6px}
+.quote-project{font-size:20px;font-weight:700}
+.quote-id{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.quote-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px}
+.qstat{background:var(--surface2);border-radius:10px;padding:20px}
+.qstat-label{font-size:12px;color:var(--muted);margin-bottom:4px;font-family:var(--mono)}
+.qstat-val{font-size:24px;font-weight:800;letter-spacing:-.5px}
+.qstat-val.accent{color:var(--accent)}
+.qstat-sub{font-size:11px;color:var(--muted);margin-top:2px;font-family:var(--mono)}
+.breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px}
+.breakdown-row:last-child{border-bottom:none}
+.breakdown-row .lbl{color:var(--muted)}
+.breakdown-row .val{font-weight:600;font-family:var(--mono)}
+.breakdown-row.total .lbl{color:var(--text);font-weight:700}
+.breakdown-row.total .val{color:var(--accent);font-size:18px}
+.wyg-title{font-size:14px;font-weight:700;margin-bottom:12px}
+.wyg-list{display:flex;flex-direction:column;gap:8px;margin-bottom:32px}
+.wyg-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted)}
+.wyg-item::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.proceed-btn{width:100%;padding:20px;border-radius:14px;border:none;background:var(--accent);color:#0a0a0a;font-family:var(--font);font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 24px rgba(232,166,40,.25)}
+.proceed-btn:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(232,166,40,.4)}
+.proceed-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.saving-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(10,10,10,.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.saving-overlay.active{display:flex}
+.saving-spinner{width:48px;height:48px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.saving-text{font-size:15px;color:var(--muted);font-family:var(--mono)}
+#submitted{display:none;text-align:center;padding:80px 48px}
+#submitted.active{display:block}
+.success-ring{width:80px;height:80px;border-radius:50%;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 24px;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,166,40,.3)}50%{box-shadow:0 0 0 16px rgba(232,166,40,0)}}
+.success-title{font-size:36px;font-weight:800;letter-spacing:-1px;margin-bottom:16px}
+.success-sub{font-size:16px;color:var(--muted);line-height:1.7;max-width:480px;margin:0 auto 32px}
+.ref-box{display:inline-block;font-family:var(--mono);font-size:14px;padding:12px 24px;background:var(--surface);border:1px solid var(--border);border-radius:8px;letter-spacing:.05em;color:var(--accent)}
+.next-steps{max-width:480px;margin:40px auto 0;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px}
+.next-steps h4{font-size:12px;font-weight:600;margin-bottom:16px;color:var(--muted);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.ns-item{display:flex;gap:12px;font-size:14px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+.ns-item:last-child{margin-bottom:0}
+.ns-dot{width:20px;height:20px;border-radius:50%;background:var(--accent-dim);border:1px solid rgba(232,166,40,.3);color:var(--accent);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--red);color:white;padding:12px 24px;border-radius:8px;font-size:14px;z-index:300;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+@media(max-width:640px){nav{padding:16px 20px}#hero{padding:100px 20px 60px}.steps{grid-template-columns:1fr 1fr;gap:2px}.step:nth-child(2)::after{display:none}.step:nth-child(2){border-radius:0 var(--radius) 0 0}.step:nth-child(3){border-radius:0 0 0 var(--radius)}.step:last-child{border-radius:0 0 var(--radius) 0}section{padding:60px 20px}.quote-grid{grid-template-columns:1fr}.quote-header{flex-direction:column;gap:8px}.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="saving-overlay" id="saving-overlay">
+  <div class="saving-spinner"></div>
+  <div class="saving-text">Saving your project...</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<nav id="navbar">
+  <div class="logo">AI<span>AI</span></div>
+  <button class="nav-pill" onclick="startApp()">Get started</button>
+</nav>
+
+<div id="hero">
+  <div class="hero-eyebrow">Custom apps, built by AI</div>
+  <h1>Your app.<br/><span class="serif">Built</span> by AI.</h1>
+  <p class="hero-sub">Describe the tool you wish existed. We use AI to build it fast and affordably — so you don't need a dev team, a big budget, or months of waiting.</p>
+  <button class="cta-big" onclick="startApp()">✦ Get started — it's free</button>
+  <div class="steps">
+    <div class="step"><div class="step-num">01</div><div class="step-title">Describe it</div><div class="step-desc">Tell us what you need in plain English</div></div>
+    <div class="step"><div class="step-num">02</div><div class="step-title">Get a quote</div><div class="step-desc">AI analyzes your needs, transparent pricing</div></div>
+    <div class="step"><div class="step-num">03</div><div class="step-title">Get an MVP</div><div class="step-desc">Working prototype built for your review</div></div>
+    <div class="step"><div class="step-num">04</div><div class="step-title">Approve &amp; launch</div><div class="step-desc">Approve it, we host it. You're live.</div></div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+<section>
+  <div class="section-label">Consultation</div>
+  <div class="section-title" id="app-title">Let's build something</div>
+  <div class="section-sub" id="app-sub">First, tell us a little about yourself. Then our AI consultant takes it from there.</div>
+  <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+
+  <!-- CONTACT -->
+  <div class="contact-card" id="contact-form">
+    <h3>Before we start</h3>
+    <p>We'll use this to send your quote and MVP preview link.</p>
+    <div class="form-row">
+      <div class="form-group"><label>Your name *</label><input type="text" id="input-name" placeholder="Jane Smith" autocomplete="name"/></div>
+      <div class="form-group"><label>Email address *</label><input type="email" id="input-email" placeholder="jane@company.com" autocomplete="email"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Phone (optional)</label><input type="tel" id="input-phone" placeholder="+1 (555) 000-0000" autocomplete="tel"/></div>
+      <div class="form-group"><label>Company (optional)</label><input type="text" id="input-company" placeholder="Acme Inc."/></div>
+    </div>
+    <div class="action-row" style="margin-top:8px">
+      <button class="btn-accent" onclick="submitContact()">Continue →</button>
+    </div>
+  </div>
+
+  <!-- CHAT -->
+  <div id="chat-section" style="display:none">
+    <div class="chat-area" id="chat"></div>
+    <div id="quick-replies-area"></div>
+
+    <div id="input-area">
+      <div class="input-row">
+        <textarea class="chat-input" id="user-input" rows="1" placeholder="Type your message…" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="action-row" id="action-row"></div>
+    </div>
+
+    <div id="upload-area" style="display:none">
+      <div class="upload-zone" id="drop-zone" onclick="triggerUpload()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
+        <div style="font-size:28px;margin-bottom:8px">📎</div>
+        <div style="font-size:14px;color:var(--muted)"><strong style="color:var(--text)">Click to upload</strong> or drag &amp; drop</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">PDF, Word, Excel, CSV, images</div>
+        <div class="file-list" id="file-list"></div>
+      </div>
+      <input type="file" id="file-input" style="display:none" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.png,.jpg,.jpeg" onchange="handleFiles(this.files)"/>
+      <div class="action-row">
+        <button class="btn-ghost" onclick="skipUpload()">Skip — no files to share</button>
+        <button class="btn-accent" id="continue-upload" style="display:none" onclick="afterUpload()">Continue with files →</button>
+      </div>
+    </div>
+
+    <div id="quote-area" style="display:none"></div>
+  </div>
+</section>
+</div>
+
+<div id="submitted">
+  <div class="success-ring">🤖</div>
+  <div class="success-title">You're in the queue.</div>
+  <div class="success-sub">Our team has your brief and will have a working prototype ready for your review within 3–5 business days. We'll email you at <strong id="confirm-email"></strong> when it's ready.</div>
+  <div class="ref-box" id="ref-code">AIAI-XXXX</div>
+  <div class="next-steps">
+    <h4>What happens next</h4>
+    <div class="ns-item"><div class="ns-dot">1</div><span>Our team reviews your brief and confirms the quote by email within 1 business day</span></div>
+    <div class="ns-item"><div class="ns-dot">2</div><span>We build your MVP — a fully working version of your app</span></div>
+    <div class="ns-item"><div class="ns-dot">3</div><span>You get a private link to review, test, and approve</span></div>
+    <div class="ns-item"><div class="ns-dot">4</div><span>Once approved, we launch it live on your own URL</span></div>
+  </div>
+  <div style="margin-top:40px"><button class="btn-ghost" onclick="location.reload()">← Start a new project</button></div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://qunchnutxjbaxesajszm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_vCs06jeS2PIQM49Yl1wQmA_8RRWi0tN';
+const EDGE_FN_URL  = `${SUPABASE_URL}/functions/v1/claude-proxy`;
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const state = {
+  phase: 0, messages: [],
+  customer: {name:'',email:'',phone:'',company:''},
+  uploadedFiles: [], quote: null, refId: null
+};
+
+const SYSTEM_PROMPT = `You are AIAI's expert AI consultant. AIAI is a company that uses AI to build custom software apps for businesses — fast and affordably. Your job: understand what the customer needs, ask smart clarifying questions, then produce a project assessment and quote.
+
+PERSONALITY: Warm, expert, direct. No fluff. You're a senior product consultant. Ask 2–3 targeted questions at a time max. Be conversational — weave questions together, never list them numerically.
+
+WHAT AIAI BUILDS: Custom web apps — dashboards, trackers, intake forms, client portals, booking systems, calculators, reporting tools, workflow automators, CRMs, inventory tools, and more. All built with AI, delivered in days not months.
+
+FLOW:
+Phase "clarify": User described their app. Ask smart questions like: Who uses this? What does it replace (spreadsheet, manual process, existing tool)? What's the single most important thing it must do? Integrations needed (email, Stripe, calendars, CRMs)? What data goes in and what comes out?
+
+Phase "anything-else": Ask if there's anything else — examples, edge cases, restrictions.
+
+Phase "assess": You have enough info. Produce this EXACT output:
+<ASSESSMENT>
+{
+  "projectName": "Short descriptive name (3-5 words)",
+  "summary": "2-3 sentences: what this app does, who it's for, what problem it solves",
+  "hours": <integer 8-200>,
+  "complexity": "low|medium|high",
+  "deliverables": ["deliverable 1", "deliverable 2", "deliverable 3", "deliverable 4", "deliverable 5"],
+  "timeline": "X–Y weeks"
+}
+</ASSESSMENT>
+Then write 2 warm sentences confirming the quote is ready to review.
+
+Hours guide: simple form/tracker = 8–20, multi-user app with auth = 20–40, workflow with integrations = 40–80, full platform = 80–200.`;
+
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40));
+
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000)}
+function showSaving(v){document.getElementById('saving-overlay').classList.toggle('active',v)}
+function setProgress(p){document.getElementById('progress').style.width=p+'%'}
+function genRef(){return 'AIAI-'+Math.random().toString(36).substr(2,6).toUpperCase()}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,180)+'px'}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}}
+function clearQR(){document.getElementById('quick-replies-area').innerHTML=''}
+
+function addMsg(role,content){
+  const chat=document.getElementById('chat');
+  const d=document.createElement('div');d.className='msg '+(role==='user'?'user':'ai');
+  const av=document.createElement('div');av.className='avatar '+(role==='user'?'human':'ai');av.textContent=role==='user'?'You':'AI';
+  const b=document.createElement('div');b.className='bubble';b.innerHTML=content.replace(/\n/g,'<br/>');
+  d.appendChild(av);d.appendChild(b);chat.appendChild(d);
+  setTimeout(()=>chat.scrollTop=chat.scrollHeight,50);
+}
+
+function showTyping(){
+  const chat=document.getElementById('chat');
+  const d=document.createElement('div');d.className='msg ai';d.id='typing-indicator';
+  d.innerHTML='<div class="avatar ai">AI</div><div class="bubble"><div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>';
+  chat.appendChild(d);chat.scrollTop=chat.scrollHeight;
+}
+function hideTyping(){const t=document.getElementById('typing-indicator');if(t)t.remove()}
+
+function setQR(chips){
+  clearQR();
+  if(!chips||!chips.length)return;
+  const row=document.createElement('div');row.className='quick-replies';
+  chips.forEach(c=>{
+    const btn=document.createElement('button');btn.className='qr-chip';btn.textContent=c;
+    btn.onclick=()=>{document.getElementById('user-input').value=c;sendMessage()};
+    row.appendChild(btn);
+  });
+  document.getElementById('quick-replies-area').appendChild(row);
+}
+
+function startApp(){
+  document.getElementById('hero').style.display='none';
+  document.getElementById('app').style.display='block';
+  window.scrollTo(0,0);setProgress(5);
+  setTimeout(()=>document.getElementById('input-name').focus(),100);
+}
+
+function submitContact(){
+  const name=document.getElementById('input-name').value.trim();
+  const email=document.getElementById('input-email').value.trim();
+  if(!name){showToast('Please enter your name');return}
+  if(!email||!email.includes('@')){showToast('Please enter a valid email address');return}
+  state.customer={name,email,phone:document.getElementById('input-phone').value.trim(),company:document.getElementById('input-company').value.trim()};
+  document.getElementById('contact-form').style.display='none';
+  document.getElementById('chat-section').style.display='block';
+  const first=name.split(' ')[0];
+  document.getElementById('app-title').textContent=`Hey ${first} 👋`;
+  document.getElementById('app-sub').textContent='Tell our AI consultant what you need built.';
+  setProgress(15);state.phase=1;
+  setTimeout(()=>{
+    const co=state.customer.company?` I see you're with ${state.customer.company} — great.`:'';
+    addMsg('ai',`Nice to meet you, ${first}!${co} I'm AIAI's consulting assistant. My job is to understand exactly what you need built, then put together a quote and spec our team can start from.\n\nSo — what's the app you wish existed? Describe it like you're telling a friend. Don't worry about being technical or not technical enough.`);
+    document.getElementById('user-input').focus();
+  },400);
+}
+
+async function sendMessage(){
+  const input=document.getElementById('user-input');
+  const text=input.value.trim();
+  if(!text)return;
+  clearQR();input.value='';input.style.height='auto';
+  document.getElementById('send-btn').disabled=true;
+  addMsg('user',text);
+  state.messages.push({role:'user',content:text});
+  showTyping();
+
+  let note=SYSTEM_PROMPT;
+  if(state.phase===1){note+='\n\nCurrent phase: "clarify". User just described app. Ask your 2-3 clarifying questions.';state.phase=2;setProgress(30)}
+  else if(state.phase===2){note+='\n\nCurrent phase: "clarify" follow-up. Absorb answers. Ask remaining questions OR move to "anything-else" if you have enough.';setProgress(50)}
+  else if(state.phase===3){note+='\n\nCurrent phase: "anything-else". Ask if anything else would help.';state.phase=4;setProgress(65)}
+  else if(state.phase===4){note+='\n\nCurrent phase: "assess". You have all the info. Produce the <ASSESSMENT> JSON then your warm 2-sentence message.';setProgress(80)}
+
+  try{
+    const res=await fetch(EDGE_FN_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:note,messages:state.messages})});
+    const data=await res.json();
+    hideTyping();
+    const reply=data.content?.[0]?.text||'Sorry, I had a hiccup. Please try again.';
+    state.messages.push({role:'assistant',content:reply});
+    const m=reply.match(/<ASSESSMENT>([\s\S]*?)<\/ASSESSMENT>/);
+    if(m){
+      const friendly=reply.replace(/<ASSESSMENT>[\s\S]*?<\/ASSESSMENT>/,'').trim();
+      if(friendly)addMsg('ai',friendly);
+      try{state.quote=JSON.parse(m[1].trim());showUploadPhase()}catch(e){addMsg('ai',reply)}
+    } else {
+      addMsg('ai',reply);
+      if(state.phase===2&&(reply.toLowerCase().includes('anything else')||reply.toLowerCase().includes('anything i'))){state.phase=3;setProgress(60);setQR(['Nope, that covers it!','Yes — let me add something','I have examples to share'])}
+      else if(state.phase===2){state.phase=4;setQR(['That covers everything','One more thing to add'])}
+      else if(state.phase===3){setQR(["Nothing else, let's see the quote",'Actually, one more thing…'])}
+    }
+  }catch(e){hideTyping();addMsg('ai','Connection issue. Please try again.');console.error(e)}
+  document.getElementById('send-btn').disabled=false;
+  document.getElementById('user-input').focus();
+}
+
+function showUploadPhase(){
+  document.getElementById('input-area').style.display='none';
+  document.getElementById('upload-area').style.display='block';
+  clearQR();
+  setTimeout(()=>addMsg('ai','Almost there! One last thing — do you currently use any document, spreadsheet, or file to handle this manually? If so, upload it now and I\'ll use it to make your spec much more accurate.'),400);
+}
+
+function triggerUpload(){document.getElementById('file-input').click()}
+function dragOver(e){e.preventDefault();document.getElementById('drop-zone').classList.add('dragover')}
+function dragLeave(){document.getElementById('drop-zone').classList.remove('dragover')}
+function dropFile(e){e.preventDefault();dragLeave();handleFiles(e.dataTransfer.files)}
+function handleFiles(files){Array.from(files).forEach(f=>{if(!state.uploadedFiles.find(x=>x.name===f.name))state.uploadedFiles.push(f)});renderFileList()}
+function removeFile(i){state.uploadedFiles.splice(i,1);renderFileList()}
+function renderFileList(){
+  const list=document.getElementById('file-list');list.innerHTML='';
+  state.uploadedFiles.forEach((f,i)=>{const c=document.createElement('div');c.className='file-chip';c.innerHTML=`<span>📄</span><span class="file-name">${f.name}</span><span class="remove" onclick="removeFile(${i})">×</span>`;list.appendChild(c)});
+  document.getElementById('continue-upload').style.display=state.uploadedFiles.length?'inline-flex':'none';
+}
+function skipUpload(){
+  document.getElementById('upload-area').style.display='none';
+  addMsg('user','No files to share');
+  state.messages.push({role:'user',content:'No additional files. Please proceed with the assessment.'});
+  showQuote(state.quote);
+}
+function afterUpload(){
+  document.getElementById('upload-area').style.display='none';
+  const names=state.uploadedFiles.map(f=>f.name).join(', ');
+  addMsg('user',`Uploaded ${state.uploadedFiles.length} file(s): ${names}`);
+  state.messages.push({role:'user',content:`Uploaded files: ${names}. Please proceed with assessment.`});
+  showQuote(state.quote);
+}
+
+function showQuote(a){
+  setProgress(95);clearQR();
+  document.getElementById('input-area').style.display='none';
+  document.getElementById('upload-area').style.display='none';
+  const hourlyRate=100;
+  const setupFee=Math.round(a.hours*1.5*hourlyRate);
+  const monthlyFee=Math.round(a.hours*hourlyRate*0.20);
+  const refId=genRef();
+  state.refId=refId;state.setupFee=setupFee;state.monthlyFee=monthlyFee;
+  const cc=a.complexity==='low'?'#4ecb71':a.complexity==='medium'?'#e8a628':'#e85050';
+  const qArea=document.getElementById('quote-area');
+  qArea.style.display='block';
+  qArea.innerHTML=`
+<div class="quote-card">
+  <div class="quote-header">
+    <div><div class="quote-label">Your Quote</div><div class="quote-project">${a.projectName}</div></div>
+    <div style="text-align:right"><div class="quote-id">${refId}</div><div style="font-size:12px;margin-top:4px;padding:4px 10px;border-radius:20px;display:inline-block;background:${cc}22;color:${cc};font-family:var(--mono)">${a.complexity} complexity</div></div>
+  </div>
+  <div style="font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6">${a.summary}</div>
+  <div class="quote-grid">
+    <div class="qstat"><div class="qstat-label">Setup fee (one-time)</div><div class="qstat-val accent">$${setupFee.toLocaleString()}</div><div class="qstat-sub">${a.hours} hrs × $${hourlyRate} × 1.5</div></div>
+    <div class="qstat"><div class="qstat-label">Monthly hosting + support</div><div class="qstat-val">$${monthlyFee.toLocaleString()}<span style="font-size:14px;font-weight:400;color:var(--muted)">/mo</span></div><div class="qstat-sub">20% of base hours value</div></div>
+  </div>
+  <div style="margin-bottom:32px">
+    <div class="breakdown-row"><span class="lbl">Estimated hours</span><span class="val">${a.hours} hrs</span></div>
+    <div class="breakdown-row"><span class="lbl">Hourly rate</span><span class="val">$${hourlyRate}/hr</span></div>
+    <div class="breakdown-row"><span class="lbl">Estimated timeline</span><span class="val">${a.timeline}</span></div>
+    <div class="breakdown-row total"><span class="lbl">Setup fee total</span><span class="val">$${setupFee.toLocaleString()}</span></div>
+  </div>
+  <div class="wyg-title">What's included</div>
+  <div class="wyg-list">
+    ${(a.deliverables||[]).map(d=>`<div class="wyg-item">${d}</div>`).join('')}
+    <div class="wyg-item">Working MVP delivered in ${a.timeline} for your review and feedback</div>
+    <div class="wyg-item">Hosted on your own URL with SSL certificate</div>
+    <div class="wyg-item">Ongoing support &amp; updates included in monthly fee</div>
+  </div>
+  <button class="proceed-btn" id="proceed-btn" onclick="proceed()">
+    <span style="font-size:24px">🤖</span>
+    Yes — let's build it! &nbsp;→
+  </button>
+  <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--muted)">No payment now. We'll confirm details before any charges.</div>
+</div>`;
+  setTimeout(()=>qArea.scrollIntoView({behavior:'smooth',block:'start'}),200);
+}
+
+async function proceed(){
+  document.getElementById('proceed-btn').disabled=true;
+  showSaving(true);
+  try{
+    const {data,error}=await sb.from('projects').insert([{
+      customer_name:state.customer.name,
+      customer_email:state.customer.email,
+      customer_phone:state.customer.phone||null,
+      project_name:state.quote.projectName,
+      summary:state.quote.summary,
+      status:'new',
+      hours:state.quote.hours,
+      complexity:state.quote.complexity,
+      setup_fee:state.setupFee,
+      monthly_fee:state.monthlyFee,
+      timeline:state.quote.timeline,
+      ref_code:state.refId,
+      transcript:state.messages,
+      deliverables:state.quote.deliverables,
+      uploaded_files:state.uploadedFiles.map(f=>({name:f.name,size:f.size,type:f.type}))
+    }]).select();
+    if(error)throw error;
+    // Save messages
+    for(const msg of state.messages){
+      await sb.from('messages').insert([{project_id:data[0].id,sender:msg.role==='user'?'customer':'aiai',content:msg.content}]);
+    }
+    showSaving(false);
+    document.getElementById('app').style.display='none';
+    document.getElementById('submitted').classList.add('active');
+    document.getElementById('ref-code').textContent=state.refId;
+    document.getElementById('confirm-email').textContent=state.customer.email;
+    setProgress(100);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(e){
+    console.error(e);showSaving(false);
+    showToast('Error saving project. Please try again.');
+    document.getElementById('proceed-btn').disabled=false;
+  }
+}
+</script>
+</body>
+</html>
