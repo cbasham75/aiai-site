@@ -360,7 +360,7 @@ async function sendMessage(){
   else if(state.phase===4){note+='\n\nCurrent phase: "assess". You have all the info. Produce the <ASSESSMENT> JSON then your warm 2-sentence message.';setProgress(80)}
 
   try{
-    const res=await fetch(EDGE_FN_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:note,messages:state.messages})});
+    const res=await fetch(EDGE_FN_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1000,system:note,messages:state.messages})});
     const data=await res.json();
     hideTyping();
     const reply=data.content?.[0]?.text||'Sorry, I had a hiccup. Please try again.';
