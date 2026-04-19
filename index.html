@@ -234,8 +234,9 @@ textarea.chat-input:focus{border-color:rgba(232,166,40,.5)}
     <h4>What happens next</h4>
     <div class="ns-item"><div class="ns-dot">1</div><span>Our team reviews your brief and confirms the quote by email within 1 business day</span></div>
     <div class="ns-item"><div class="ns-dot">2</div><span>We build your MVP — a fully working version of your app</span></div>
-    <div class="ns-item"><div class="ns-dot">3</div><span>You get a private link to review, test, and approve</span></div>
-    <div class="ns-item"><div class="ns-dot">4</div><span>Once approved, we launch it live on your own URL</span></div>
+    <div class="ns-item"><div class="ns-dot">3</div><span>Your app is sent to our QA auditor for testing and final review before you ever see it</span></div>
+    <div class="ns-item"><div class="ns-dot">4</div><span>You get a private link to review, test, and approve</span></div>
+    <div class="ns-item"><div class="ns-dot">5</div><span>Once approved, we launch it live on your own URL</span></div>
   </div>
   <div style="margin-top:40px"><button class="btn-ghost" onclick="location.reload()">← Start a new project</button></div>
 </div>
@@ -252,31 +253,44 @@ const state = {
   uploadedFiles: [], quote: null, refId: null
 };
 
-const SYSTEM_PROMPT = `You are AIAI's expert AI consultant. AIAI is a company that uses AI to build custom software apps for businesses — fast and affordably. Your job: understand what the customer needs, ask smart clarifying questions, then produce a project assessment and quote.
+const SYSTEM_PROMPT = `You are AIAI's expert AI consultant. AIAI is a company that uses AI to build custom software apps for businesses — fast and affordably. Your job: understand what the customer needs, ask smart clarifying questions, then produce an accurate project assessment and quote.
 
-PERSONALITY: Warm, expert, direct. No fluff. You're a senior product consultant. Ask 2–3 targeted questions at a time max. Be conversational — weave questions together, never list them numerically.
+PERSONALITY: Warm, expert, direct. No fluff. You're a senior product consultant who has built hundreds of apps. Ask 2-3 targeted questions at a time max. Be conversational — weave questions together, never list them numerically.
 
 WHAT AIAI BUILDS: Custom web apps — dashboards, trackers, intake forms, client portals, booking systems, calculators, reporting tools, workflow automators, CRMs, inventory tools, and more. All built with AI, delivered in days not months.
 
 FLOW:
-Phase "clarify": User described their app. Ask smart questions like: Who uses this? What does it replace (spreadsheet, manual process, existing tool)? What's the single most important thing it must do? Integrations needed (email, Stripe, calendars, CRMs)? What data goes in and what comes out?
+Phase "clarify": User described their app. Ask smart questions: Who uses this? What does it replace? What is the single most important thing it must do? Integrations needed? What data goes in and comes out?
 
-Phase "anything-else": Ask if there's anything else — examples, edge cases, restrictions.
+Phase "anything-else": Ask if there is anything else — examples, edge cases, restrictions.
 
-Phase "assess": You have enough info. Produce this EXACT output:
+Phase "assess": You have enough info. First reason through the estimate by counting: How many distinct screens or views? How many data inputs and outputs? Any user authentication? Any third-party integrations? Any automated logic or workflows? Any email or notification triggers?
+
+Then assign hours based on this precise scale:
+- Single utility (calculator, converter, lookup tool): 1-3 hours
+- Simple form with email notification: 2-4 hours
+- Single-page tracker or dashboard (no auth): 3-6 hours
+- Multi-screen app, no auth, no integrations: 5-10 hours
+- App with database and basic auth: 8-16 hours
+- App with auth, email, and 1 integration: 12-24 hours
+- Multi-user app with roles and permissions: 20-35 hours
+- Complex workflow with multiple integrations: 30-60 hours
+- Full platform, multiple modules: 60-150 hours
+
+Add hours for each meaningful feature. Subtract if scope is narrow. Be precise — a 3-hour job should be quoted as 3 hours, not rounded up to 8. Accuracy builds trust.
+
+Produce this EXACT output:
 <ASSESSMENT>
 {
   "projectName": "Short descriptive name (3-5 words)",
   "summary": "2-3 sentences: what this app does, who it's for, what problem it solves",
-  "hours": <integer 8-200>,
+  "hours": <integer 1-150>,
   "complexity": "low|medium|high",
   "deliverables": ["deliverable 1", "deliverable 2", "deliverable 3", "deliverable 4", "deliverable 5"],
-  "timeline": "X–Y weeks"
+  "timeline": "X-Y days or weeks"
 }
 </ASSESSMENT>
-Then write 2 warm sentences confirming the quote is ready to review.
-
-Hours guide: simple form/tracker = 8–20, multi-user app with auth = 20–40, workflow with integrations = 40–80, full platform = 80–200.`;
+Then write 2 warm sentences confirming the quote is ready to review.`;
 
 window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40));
 
@@ -433,12 +447,10 @@ function showQuote(a){
   </div>
   <div style="font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6">${a.summary}</div>
   <div class="quote-grid">
-    <div class="qstat"><div class="qstat-label">Setup fee (one-time)</div><div class="qstat-val accent">$${setupFee.toLocaleString()}</div><div class="qstat-sub">${a.hours} hrs × $${hourlyRate} × 1.5</div></div>
-    <div class="qstat"><div class="qstat-label">Monthly hosting + support</div><div class="qstat-val">$${monthlyFee.toLocaleString()}<span style="font-size:14px;font-weight:400;color:var(--muted)">/mo</span></div><div class="qstat-sub">20% of base hours value</div></div>
+    <div class="qstat"><div class="qstat-label">Setup fee (one-time)</div><div class="qstat-val accent">$${setupFee.toLocaleString()}</div><div class="qstat-sub">One-time build fee</div></div>
+    <div class="qstat"><div class="qstat-label">Monthly hosting + support</div><div class="qstat-val">$${monthlyFee.toLocaleString()}<span style="font-size:14px;font-weight:400;color:var(--muted)">/mo</span></div><div class="qstat-sub">Hosting, updates &amp; support</div></div>
   </div>
   <div style="margin-bottom:32px">
-    <div class="breakdown-row"><span class="lbl">Estimated hours</span><span class="val">${a.hours} hrs</span></div>
-    <div class="breakdown-row"><span class="lbl">Hourly rate</span><span class="val">$${hourlyRate}/hr</span></div>
     <div class="breakdown-row"><span class="lbl">Estimated timeline</span><span class="val">${a.timeline}</span></div>
     <div class="breakdown-row total"><span class="lbl">Setup fee total</span><span class="val">$${setupFee.toLocaleString()}</span></div>
   </div>
