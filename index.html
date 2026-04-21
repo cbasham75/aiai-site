@@ -496,6 +496,26 @@ async function proceed(){
     for(const msg of state.messages){
       await sb.from('messages').insert([{project_id:data[0].id,sender:msg.role==='user'?'customer':'aiai',content:msg.content}]);
     }
+    // Fire notification email
+    try{
+      await fetch(EDGE_FN_URL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          _action:'notify_new_project',
+          customerName:state.customer.name,
+          customerEmail:state.customer.email,
+          customerPhone:state.customer.phone||'Not provided',
+          projectName:state.quote.projectName,
+          summary:state.quote.summary,
+          setupFee:state.setupFee,
+          monthlyFee:state.monthlyFee,
+          timeline:state.quote.timeline,
+          complexity:state.quote.complexity,
+          refCode:state.refId
+        })
+      });
+    }catch(emailErr){console.warn('Email notification failed:',emailErr)}
     showSaving(false);
     document.getElementById('app').style.display='none';
     document.getElementById('submitted').classList.add('active');
