@@ -3,38 +3,40 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AIAI — Your App, Built by AI</title>
+<title>Ainkle — Your App, Built by AI</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='48' height='48' rx='12' fill='%231A1A2E'/%3E%3Cpath d='M18 12 L18 28 Q18 36 26 36 L34 36' stroke='%234FC3F7' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Ccircle cx='18' cy='12' r='3' fill='%234FC3F7'/%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0a0a0a;--surface:#111111;--surface2:#181818;--border:#232323;--border2:#2e2e2e;
-  --text:#f0ece4;--muted:#7a7570;--accent:#e8a628;--accent2:#f0c060;--accent-dim:#3a2a0a;
-  --red:#e85050;--green:#4ecb71;--radius:12px;
+  --bg:#0d0f1a;--surface:#131620;--surface2:#1a1e2e;--border:#1e2236;--border2:#262b40;
+  --text:#f0f4ff;--muted:#6b7494;--accent:#4FC3F7;--accent2:#81d4fa;--accent-dim:#0d2233;
+  --midnight:#1A1A2E;--red:#e85050;--green:#4ecb71;--radius:12px;
   --font:'Syne',sans-serif;--mono:'DM Mono',monospace;--serif:'Instrument Serif',serif;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:0.04}
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
-nav.scrolled{background:rgba(10,10,10,.92);border-color:var(--border);backdrop-filter:blur(12px)}
-.logo{font-size:22px;font-weight:800;letter-spacing:-.5px;color:var(--text)}
+nav.scrolled{background:rgba(13,15,26,.95);border-color:var(--border);backdrop-filter:blur(12px)}
+.logo{font-size:22px;font-weight:800;letter-spacing:-.5px;color:var(--text);display:flex;align-items:center}
 .logo span{color:var(--accent)}
-.nav-pill{font-size:13px;font-weight:600;letter-spacing:.04em;padding:9px 20px;border-radius:100px;background:var(--accent);color:#0a0a0a;cursor:pointer;border:none;transition:transform .15s,opacity .15s}
+.logo-icon{width:28px;height:28px;flex-shrink:0}
+.nav-pill{font-size:13px;font-weight:600;letter-spacing:.04em;padding:9px 20px;border-radius:100px;background:var(--accent);color:#0d0f1a;cursor:pointer;border:none;transition:transform .15s,opacity .15s}
 .nav-pill:hover{opacity:.85;transform:scale(1.02)}
-#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 48px 80px;text-align:center;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(232,166,40,.06) 0%,transparent 70%)}
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 48px 80px;text-align:center;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(79,195,247,.08) 0%,transparent 70%)}
 .hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:8px}
-.hero-eyebrow::before,.hero-eyebrow::after{content:'';flex:1;max-width:40px;height:1px;background:var(--accent);opacity:.5}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';flex:1;max-width:40px;height:1px;background:var(--accent);opacity:.4}
 h1{font-size:clamp(52px,7vw,96px);font-weight:800;line-height:.95;letter-spacing:-3px;margin-bottom:32px}
 h1 .serif{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--accent)}
 .hero-sub{font-size:18px;color:var(--muted);max-width:520px;line-height:1.6;margin-bottom:56px;font-weight:400}
-.cta-big{font-size:17px;font-weight:700;letter-spacing:.02em;padding:18px 48px;border-radius:100px;background:var(--accent);color:#0a0a0a;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.cta-big{font-size:17px;font-weight:700;letter-spacing:.02em;padding:18px 48px;border-radius:100px;background:var(--accent);color:#0d0f1a;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
 .cta-big::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 50%)}
-.cta-big:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(232,166,40,.35)}
+.cta-big:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(79,195,247,.25)}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;max-width:900px;width:100%;margin:80px auto 0}
-.step{background:var(--surface);border:1px solid var(--border);padding:28px 24px;position:relative}
+.step{background:var(--surface);border:1px solid var(--border);padding:28px 24px;position:relative;transition:border-color .2s}
 .step:first-child{border-radius:var(--radius) 0 0 var(--radius)}
 .step:last-child{border-radius:0 var(--radius) var(--radius) 0}
 .step-num{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;margin-bottom:12px}
@@ -75,11 +77,11 @@ section{max-width:840px;margin:0 auto;padding:80px 48px}
 textarea.chat-input{flex:1;resize:none;background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:14px 18px;font-family:var(--font);font-size:15px;color:var(--text);outline:none;line-height:1.5;min-height:52px;max-height:180px;transition:border-color .2s}
 textarea.chat-input::placeholder{color:var(--muted)}
 textarea.chat-input:focus{border-color:rgba(232,166,40,.5)}
-.send-btn{width:52px;height:52px;border-radius:12px;border:none;background:var(--accent);color:#0a0a0a;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,opacity .15s;flex-shrink:0}
+.send-btn{width:52px;height:52px;border-radius:12px;border:none;background:var(--accent);color:#0d0f1a;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,opacity .15s;flex-shrink:0}
 .send-btn:hover{opacity:.85;transform:scale(1.05)}
 .send-btn:disabled{opacity:.3;cursor:not-allowed;transform:none}
 .upload-zone{border:1.5px dashed var(--border2);border-radius:var(--radius);padding:32px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;margin-bottom:24px}
-.upload-zone:hover,.upload-zone.dragover{border-color:var(--accent);background:rgba(232,166,40,.04)}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--accent);background:rgba(79,195,247,.04)}
 .file-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
 .file-chip{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--mono)}
 .file-chip .file-name{flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -87,14 +89,14 @@ textarea.chat-input:focus{border-color:rgba(232,166,40,.5)}
 .file-chip .remove:hover{color:var(--red)}
 .quick-replies{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
 .qr-chip{font-size:13px;padding:7px 14px;border-radius:100px;border:1px solid var(--border2);color:var(--muted);cursor:pointer;transition:border-color .15s,color .15s,background .15s;background:transparent;font-family:var(--font)}
-.qr-chip:hover{border-color:var(--accent);color:var(--accent);background:rgba(232,166,40,.06)}
+.qr-chip:hover{border-color:var(--accent);color:var(--accent);background:rgba(79,195,247,.05)}
 .action-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
 .btn-ghost{font-size:13px;font-weight:600;padding:10px 20px;border-radius:8px;border:1px solid var(--border2);color:var(--muted);cursor:pointer;background:transparent;font-family:var(--font);transition:color .15s}
 .btn-ghost:hover{color:var(--text)}
-.btn-accent{font-size:13px;font-weight:700;padding:10px 24px;border-radius:8px;border:none;background:var(--accent);color:#0a0a0a;cursor:pointer;font-family:var(--font);transition:opacity .15s,transform .15s}
+.btn-accent{font-size:13px;font-weight:700;padding:10px 24px;border-radius:8px;border:none;background:var(--accent);color:#0d0f1a;cursor:pointer;font-family:var(--font);transition:opacity .15s,transform .15s}
 .btn-accent:hover{opacity:.85;transform:scale(1.02)}
 .quote-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px;margin:32px 0;position:relative;overflow:hidden}
-.quote-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.quote-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4FC3F7,#81d4fa)}
 .quote-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px}
 .quote-label{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;margin-bottom:6px}
 .quote-project{font-size:20px;font-weight:700}
@@ -115,8 +117,8 @@ textarea.chat-input:focus{border-color:rgba(232,166,40,.5)}
 .wyg-list{display:flex;flex-direction:column;gap:8px;margin-bottom:32px}
 .wyg-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted)}
 .wyg-item::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
-.proceed-btn{width:100%;padding:20px;border-radius:14px;border:none;background:var(--accent);color:#0a0a0a;font-family:var(--font);font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 24px rgba(232,166,40,.25)}
-.proceed-btn:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(232,166,40,.4)}
+.proceed-btn{width:100%;padding:20px;border-radius:14px;border:none;background:var(--accent);color:#0d0f1a;font-family:var(--font);font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 24px rgba(79,195,247,.2)}
+.proceed-btn:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(79,195,247,.3)}
 .proceed-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .saving-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(10,10,10,.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column;gap:16px}
 .saving-overlay.active{display:flex}
@@ -126,7 +128,7 @@ textarea.chat-input:focus{border-color:rgba(232,166,40,.5)}
 #submitted{display:none;text-align:center;padding:80px 48px}
 #submitted.active{display:block}
 .success-ring{width:80px;height:80px;border-radius:50%;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 24px;animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,166,40,.3)}50%{box-shadow:0 0 0 16px rgba(232,166,40,0)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(79,195,247,.3)}50%{box-shadow:0 0 0 16px rgba(79,195,247,0)}}
 .success-title{font-size:36px;font-weight:800;letter-spacing:-1px;margin-bottom:16px}
 .success-sub{font-size:16px;color:var(--muted);line-height:1.7;max-width:480px;margin:0 auto 32px}
 .ref-box{display:inline-block;font-family:var(--mono);font-size:14px;padding:12px 24px;background:var(--surface);border:1px solid var(--border);border-radius:8px;letter-spacing:.05em;color:var(--accent)}
@@ -150,14 +152,24 @@ textarea.chat-input:focus{border-color:rgba(232,166,40,.5)}
 <div class="toast" id="toast"></div>
 
 <nav id="navbar">
-  <div class="logo">AI<span>AI</span></div>
+  <div class="logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 64" height="32">
+      <rect width="280" height="64" rx="12" fill="#1A1A2E"/>
+      <rect x="8" y="8" width="48" height="48" rx="10" fill="#4FC3F7"/>
+      <path d="M26 20 L26 36 Q26 44 34 44 L42 44" stroke="#1A1A2E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="26" cy="20" r="3" fill="#1A1A2E"/>
+      <text x="68" y="46" font-family="Georgia, serif" font-size="38" font-weight="700" fill="#4FC3F7" letter-spacing="-1">A</text>
+      <text x="92" y="46" font-family="Georgia, serif" font-size="38" font-weight="700" fill="#4FC3F7" letter-spacing="-1">I</text>
+      <text x="110" y="46" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#ffffff" letter-spacing="-2">nkle</text>
+    </svg>
+  </div>
   <button class="nav-pill" onclick="startApp()">Get started</button>
 </nav>
 
 <div id="hero">
   <div class="hero-eyebrow">Custom apps, built by AI</div>
   <h1>Your app.<br/><span class="serif">Built</span> by AI.</h1>
-  <p class="hero-sub">Describe the tool you wish existed. We use AI to build it fast and affordably — so you don't need a dev team, a big budget, or months of waiting.</p>
+  <p class="hero-sub">We've learned AI so you don't have to. Describe the tool you wish existed and we'll build it — fast, affordable, no dev team needed.</p>
   <button class="cta-big" onclick="startApp()">✦ Get started — it's free</button>
   <div class="steps">
     <div class="step"><div class="step-num">01</div><div class="step-title">Describe it</div><div class="step-desc">Tell us what you need in plain English</div></div>
@@ -229,7 +241,7 @@ textarea.chat-input:focus{border-color:rgba(232,166,40,.5)}
   <div class="success-ring">🤖</div>
   <div class="success-title">You're in the queue.</div>
   <div class="success-sub">Our team has your brief and will have a working prototype ready for your review within 3–5 business days. We'll email you at <strong id="confirm-email"></strong> when it's ready.</div>
-  <div class="ref-box" id="ref-code">AIAI-XXXX</div>
+  <div class="ref-box" id="ref-code">ANK-XXXX</div>
   <div class="next-steps">
     <h4>What happens next</h4>
     <div class="ns-item"><div class="ns-dot">1</div><span>Our team reviews your brief and confirms the quote by email within 1 business day</span></div>
@@ -253,11 +265,11 @@ const state = {
   uploadedFiles: [], quote: null, refId: null
 };
 
-const SYSTEM_PROMPT = `You are AIAI's expert AI consultant. AIAI is a company that uses AI to build custom software apps for businesses — fast and affordably. Your job: understand what the customer needs, ask smart clarifying questions, then produce an accurate project assessment and quote.
+const SYSTEM_PROMPT = `You are Ainkle's expert AI consultant. Ainkle is a company that uses AI to build custom software apps for businesses — fast and affordably. Your job: understand what the customer needs, ask smart clarifying questions, then produce an accurate project assessment and quote.
 
 PERSONALITY: Warm, expert, direct. No fluff. You're a senior product consultant who has built hundreds of apps. Ask 2-3 targeted questions at a time max. Be conversational — weave questions together, never list them numerically.
 
-WHAT AIAI BUILDS: Custom web apps — dashboards, trackers, intake forms, client portals, booking systems, calculators, reporting tools, workflow automators, CRMs, inventory tools, and more. All built with AI, delivered in days not months.
+WHAT AINKLE BUILDS: Custom web apps — dashboards, trackers, intake forms, client portals, booking systems, calculators, reporting tools, workflow automators, CRMs, inventory tools, and more. All built with AI, delivered in days not months.
 
 FLOW:
 Phase "clarify": User described their app. Ask smart questions: Who uses this? What does it replace? What is the single most important thing it must do? Integrations needed? What data goes in and comes out?
@@ -297,7 +309,7 @@ window.addEventListener('scroll',()=>document.getElementById('navbar').classList
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000)}
 function showSaving(v){document.getElementById('saving-overlay').classList.toggle('active',v)}
 function setProgress(p){document.getElementById('progress').style.width=p+'%'}
-function genRef(){return 'AIAI-'+Math.random().toString(36).substr(2,6).toUpperCase()}
+function genRef(){return 'ANK-'+Math.random().toString(36).substr(2,6).toUpperCase()}
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,180)+'px'}
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}}
 function clearQR(){document.getElementById('quick-replies-area').innerHTML=''}
@@ -352,7 +364,7 @@ function submitContact(){
   setProgress(15);state.phase=1;
   setTimeout(()=>{
     const co=state.customer.company?` I see you're with ${state.customer.company} — great.`:'';
-    addMsg('ai',`Nice to meet you, ${first}!${co} I'm AIAI's consulting assistant. My job is to understand exactly what you need built, then put together a quote and spec our team can start from.\n\nSo — what's the app you wish existed? Describe it like you're telling a friend. Don't worry about being technical or not technical enough.`);
+    addMsg('ai',`Nice to meet you, ${first}!${co} I'm Ainkle's consulting assistant. My job is to understand exactly what you need built, then put together a quote and spec our team can start from.\n\nSo — what's the app you wish existed? Describe it like you're telling a friend. Don't worry about being technical or not technical enough.`);
     document.getElementById('user-input').focus();
   },400);
 }
@@ -494,7 +506,7 @@ async function proceed(){
     if(error)throw error;
     // Save messages
     for(const msg of state.messages){
-      await sb.from('messages').insert([{project_id:data[0].id,sender:msg.role==='user'?'customer':'aiai',content:msg.content}]);
+      await sb.from('messages').insert([{project_id:data[0].id,sender:msg.role==='user'?'customer':'ainkle',content:msg.content}]);
     }
     // Fire notification email
     try{
