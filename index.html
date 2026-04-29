@@ -141,6 +141,31 @@ textarea.chat-input:focus{border-color:rgba(232,166,40,.5)}
 .toast.show{opacity:1}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
+/* ── FOUNDING BANNER ── */
+.founding-banner{
+  background:linear-gradient(90deg,#0d2233,#1A1A2E);
+  border-bottom:1px solid rgba(79,195,247,.25);
+  padding:10px 24px;
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  position:relative;z-index:99;
+  font-size:13px;
+}
+.founding-banner-text{color:rgba(255,255,255,.8);display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
+.founding-banner-count{font-family:var(--mono);font-weight:700;color:var(--accent);font-size:15px}
+.founding-banner-cta{
+  font-size:12px;font-weight:700;padding:6px 16px;border-radius:100px;
+  background:var(--accent);color:#0d0f1a;border:none;cursor:pointer;
+  font-family:var(--font);white-space:nowrap;flex-shrink:0;
+  transition:opacity .15s;
+}
+.founding-banner-cta:hover{opacity:.85}
+.founding-banner-close{
+  position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;
+  font-size:18px;line-height:1;padding:4px;
+}
+.founding-banner-close:hover{color:rgba(255,255,255,.7)}
+
 /* ── LANDING SECTIONS ── */
 .landing-section{padding:100px 48px;max-width:1100px;margin:0 auto}
 .landing-section.full{max-width:100%;padding:100px 0}
@@ -248,6 +273,18 @@ footer{background:var(--midnight);border-top:1px solid rgba(255,255,255,.06);pad
   <div class="saving-text">Saving your project...</div>
 </div>
 <div class="toast" id="toast"></div>
+
+<!-- ── FOUNDING BANNER ── -->
+<div class="founding-banner" id="founding-banner">
+  <div class="founding-banner-text">
+    ⭐ <strong>Founding 50 offer</strong> — 
+    <span>Only</span>
+    <span class="founding-banner-count" id="banner-count">50</span>
+    <span>spots left to get your setup fee waived forever.</span>
+  </div>
+  <button class="founding-banner-cta" onclick="startApp()">Claim your spot →</button>
+  <button class="founding-banner-close" onclick="closeBanner()" title="Dismiss">×</button>
+</div>
 
 <nav id="navbar">
   <div class="logo">
@@ -732,6 +769,12 @@ Then write 2 warm sentences confirming the quote is ready to review.`;
 window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40));
 
 // ── FOUNDING 50 ──
+function closeBanner(){
+  const b=document.getElementById('founding-banner');
+  if(b)b.style.display='none';
+  sessionStorage.setItem('bannerDismissed','1');
+}
+
 async function loadFoundingCounter(){
   try{
     const{count}=await sb.from('projects').select('*',{count:'exact',head:true}).in('status',['approved','live']);
@@ -742,10 +785,19 @@ async function loadFoundingCounter(){
     const el=document.getElementById('founding-remaining');
     const lbl=document.getElementById('founding-label');
     const bar=document.getElementById('founding-bar');
+    const bannerCount=document.getElementById('banner-count');
     if(el)el.textContent=remaining;
     if(lbl)lbl.textContent=remaining===0?'All spots claimed — join the waitlist':'spots remaining of 50';
     if(bar)bar.style.width=pct+'%';
-    if(remaining===0&&el)el.style.color='var(--muted)';
+    if(bannerCount)bannerCount.textContent=remaining;
+    if(remaining===0){
+      if(el)el.style.color='var(--muted)';
+      const banner=document.getElementById('founding-banner');
+      if(banner)banner.innerHTML='<div class="founding-banner-text">⭐ Founding 50 is full — <strong>join the waitlist</strong> for future offers</div><button class="founding-banner-close" onclick="closeBanner()">×</button>';
+    }
+    if(remaining===0||sessionStorage.getItem('bannerDismissed')){
+      if(remaining>0){const b=document.getElementById('founding-banner');if(b)b.style.display='none';}
+    }
   }catch(e){
     const el=document.getElementById('founding-remaining');
     if(el)el.textContent='50';
