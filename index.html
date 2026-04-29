@@ -19,14 +19,14 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:0.04}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
-nav.scrolled{background:rgba(13,15,26,.95);border-color:var(--border);backdrop-filter:blur(12px)}
+nav{position:sticky;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;border-bottom:1px solid var(--border);background:rgba(13,15,26,.97);backdrop-filter:blur(12px);transition:border-color .3s,background .3s}
+nav.scrolled{background:rgba(13,15,26,.99)}
 .logo{font-size:22px;font-weight:800;letter-spacing:-.5px;color:var(--text);display:flex;align-items:center}
 .logo span{color:var(--accent)}
 .logo-icon{width:28px;height:28px;flex-shrink:0}
 .nav-pill{font-size:13px;font-weight:600;letter-spacing:.04em;padding:9px 20px;border-radius:100px;background:var(--accent);color:#0d0f1a;cursor:pointer;border:none;transition:transform .15s,opacity .15s}
 .nav-pill:hover{opacity:.85;transform:scale(1.02)}
-#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 48px 80px;text-align:center;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(79,195,247,.08) 0%,transparent 70%)}
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 48px 80px;text-align:center;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(79,195,247,.08) 0%,transparent 70%)}
 .hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:8px}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';flex:1;max-width:40px;height:1px;background:var(--accent);opacity:.4}
 h1{font-size:clamp(52px,7vw,96px);font-weight:800;line-height:.95;letter-spacing:-3px;margin-bottom:32px}
@@ -147,7 +147,7 @@ textarea.chat-input:focus{border-color:rgba(232,166,40,.5)}
   border-bottom:1px solid rgba(79,195,247,.25);
   padding:10px 24px;
   display:flex;align-items:center;justify-content:center;gap:16px;
-  position:relative;z-index:99;
+  position:sticky;top:0;z-index:101;
   font-size:13px;
 }
 .founding-banner-text{color:rgba(255,255,255,.8);display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
