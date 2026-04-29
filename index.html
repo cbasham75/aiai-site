@@ -140,6 +140,104 @@ textarea.chat-input:focus{border-color:rgba(232,166,40,.5)}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--red);color:white;padding:12px 24px;border-radius:8px;font-size:14px;z-index:300;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ── LANDING SECTIONS ── */
+.landing-section{padding:100px 48px;max-width:1100px;margin:0 auto}
+.landing-section.full{max-width:100%;padding:100px 0}
+.section-tag{font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-tag::before{content:'';width:24px;height:1px;background:var(--accent);opacity:.5}
+.landing-h2{font-size:clamp(36px,4vw,56px);font-weight:800;letter-spacing:-2px;line-height:1;margin-bottom:16px}
+.landing-h2 em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--accent)}
+.landing-sub{font-size:17px;color:var(--muted);line-height:1.7;max-width:560px}
+.divider-line{height:1px;background:var(--border);margin:0 48px}
+
+/* ── HOW IT WORKS EXPANDED ── */
+.hiw-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:56px}
+.hiw-card{background:var(--surface);border:1px solid var(--border);padding:36px;position:relative;transition:border-color .2s}
+.hiw-card:hover{border-color:var(--border2)}
+.hiw-card:nth-child(1){border-radius:var(--radius) 0 0 0}
+.hiw-card:nth-child(2){border-radius:0 var(--radius) 0 0}
+.hiw-card:nth-child(3){border-radius:0 0 0 var(--radius)}
+.hiw-card:nth-child(4){border-radius:0 0 var(--radius) 0}
+.hiw-num{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;margin-bottom:16px}
+.hiw-title{font-size:20px;font-weight:700;margin-bottom:10px}
+.hiw-desc{font-size:14px;color:var(--muted);line-height:1.7}
+.hiw-detail{margin-top:16px;display:flex;flex-direction:column;gap:6px}
+.hiw-detail-item{display:flex;gap:8px;font-size:13px;color:var(--muted)}
+.hiw-detail-item::before{content:'→';color:var(--accent);flex-shrink:0}
+
+/* ── PRICING MODEL ── */
+.pricing-model-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+.pm-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;position:relative;overflow:hidden}
+.pm-card.featured{border-color:rgba(79,195,247,.3);background:rgba(79,195,247,.04)}
+.pm-card.featured::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)}
+.pm-icon{font-size:28px;margin-bottom:16px}
+.pm-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.pm-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* ── FOUNDING 50 ── */
+.founding-section{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 48px;text-align:center}
+.founding-counter{font-size:clamp(64px,10vw,120px);font-weight:800;letter-spacing:-4px;color:var(--accent);line-height:1;margin:24px 0 8px;font-family:var(--mono)}
+.founding-label{font-size:16px;color:var(--muted);margin-bottom:32px}
+.founding-bar-track{height:6px;background:var(--surface2);border-radius:3px;max-width:400px;margin:0 auto 32px;overflow:hidden}
+.founding-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width 1s ease}
+.founding-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(79,195,247,.08);border:1px solid rgba(79,195,247,.2);border-radius:100px;padding:8px 20px;font-size:13px;color:var(--accent);font-family:var(--mono);margin-bottom:24px}
+
+/* ── PORTFOLIO ── */
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+.portfolio-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;font-family:var(--mono);cursor:pointer;transition:border-color .2s;position:relative}
+.portfolio-card:hover{border-color:var(--border2)}
+.portfolio-placeholder{text-align:center}
+.portfolio-placeholder .icon{font-size:32px;margin-bottom:8px;opacity:.3}
+
+/* ── CONTACT ── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;margin-top:48px;align-items:start}
+.contact-info h3{font-size:24px;font-weight:700;margin-bottom:16px}
+.contact-info p{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:24px}
+.contact-detail{display:flex;gap:12px;align-items:center;font-size:14px;color:var(--muted);margin-bottom:12px}
+.contact-detail a{color:var(--accent);text-decoration:none}
+.contact-detail a:hover{text-decoration:underline}
+.contact-form-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
+.contact-form-card h3{font-size:18px;font-weight:700;margin-bottom:6px}
+.contact-form-card p{font-size:13px;color:var(--muted);margin-bottom:24px}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.cf-group{display:flex;flex-direction:column;gap:6px}
+.cf-group label{font-size:11px;font-weight:600;color:var(--muted);font-family:var(--mono);letter-spacing:.05em}
+.cf-group input,.cf-group textarea,.cf-group select{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:11px 14px;font-family:var(--font);font-size:14px;color:var(--text);outline:none;transition:border-color .2s;width:100%}
+.cf-group textarea{min-height:100px;resize:vertical;line-height:1.5}
+.cf-group input:focus,.cf-group textarea:focus,.cf-group select:focus{border-color:rgba(79,195,247,.5)}
+.cf-group input::placeholder,.cf-group textarea::placeholder{color:var(--muted)}
+.cf-submit{width:100%;padding:13px;border-radius:10px;border:none;background:var(--accent);color:#0d0f1a;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:opacity .15s,transform .15s;margin-top:4px}
+.cf-submit:hover{opacity:.88;transform:translateY(-1px)}
+.cf-success{display:none;text-align:center;padding:24px;color:var(--green);font-weight:600}
+
+/* ── FOOTER ── */
+footer{background:var(--midnight);border-top:1px solid rgba(255,255,255,.06);padding:40px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{font-size:16px;font-weight:800;color:#f0f4ff;display:flex;align-items:center;gap:8px}
+.footer-logo span{color:var(--accent)}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s}
+.footer-links a:hover{color:rgba(255,255,255,.8)}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.25);font-family:var(--mono)}
+
+/* ── NAV LINKS ── */
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-link{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;transition:color .15s}
+.nav-link:hover{color:var(--text)}
+
+@media(max-width:768px){
+  .landing-section{padding:60px 20px}
+  .hiw-grid{grid-template-columns:1fr}
+  .hiw-card:nth-child(n){border-radius:var(--radius)}
+  .pricing-model-grid{grid-template-columns:1fr}
+  .portfolio-grid{grid-template-columns:1fr 1fr}
+  .contact-grid{grid-template-columns:1fr;gap:32px}
+  .cf-row{grid-template-columns:1fr}
+  footer{flex-direction:column;text-align:center}
+  .footer-links{flex-wrap:wrap;justify-content:center}
+  .divider-line{margin:0 20px}
+  .nav-links{display:none}
+}
 @media(max-width:640px){nav{padding:16px 20px}#hero{padding:100px 20px 60px}.steps{grid-template-columns:1fr 1fr;gap:2px}.step:nth-child(2)::after{display:none}.step:nth-child(2){border-radius:0 var(--radius) 0 0}.step:nth-child(3){border-radius:0 0 0 var(--radius)}.step:last-child{border-radius:0 0 var(--radius) 0}section{padding:60px 20px}.quote-grid{grid-template-columns:1fr}.quote-header{flex-direction:column;gap:8px}.form-row{grid-template-columns:1fr}}
 </style>
 </head>
@@ -163,6 +261,11 @@ textarea.chat-input:focus{border-color:rgba(232,166,40,.5)}
       <text x="110" y="46" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#ffffff" letter-spacing="-2">nkle</text>
     </svg>
   </div>
+  <div class="nav-links">
+    <a class="nav-link" href="#how-it-works">How it works</a>
+    <a class="nav-link" href="#pricing">Pricing</a>
+    <a class="nav-link" href="#contact">Contact</a>
+  </div>
   <button class="nav-pill" onclick="startApp()">Get started</button>
 </nav>
 
@@ -178,6 +281,328 @@ textarea.chat-input:focus{border-color:rgba(232,166,40,.5)}
     <div class="step"><div class="step-num">04</div><div class="step-title">Approve &amp; launch</div><div class="step-desc">Approve it, we host it. You're live.</div></div>
   </div>
 </div>
+
+<!-- ── IDEAS → APPS ANIMATION ── -->
+<div class="divider-line"></div>
+<div style="background:var(--surface);padding:80px 48px;text-align:center;overflow:hidden" id="how-it-works">
+  <div class="section-tag" style="justify-content:center">The magic</div>
+  <div class="landing-h2" style="text-align:center;margin-bottom:8px">Your idea. <em>Our AI.</em> Real software.</div>
+  <div class="landing-sub" style="margin:0 auto 56px;text-align:center">We've learned AI so you don't have to. Describe what you need and watch it become a working app.</div>
+
+  <!-- ANIMATED SVG -->
+  <div style="max-width:800px;margin:0 auto;position:relative">
+    <svg viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <!-- Ideas coming in -->
+      <g class="idea-group-1">
+        <circle cx="60" cy="60" r="28" fill="#1a1e2e" stroke="#4FC3F7" stroke-width="1.5" opacity="0.9">
+          <animate attributeName="cx" values="60;180" dur="3s" repeatCount="indefinite" begin="0s"/>
+          <animate attributeName="opacity" values="0.9;0" dur="3s" repeatCount="indefinite" begin="0s"/>
+        </circle>
+        <text x="60" y="65" text-anchor="middle" font-size="18" fill="#4FC3F7">
+          💡
+          <animate attributeName="x" values="60;180" dur="3s" repeatCount="indefinite" begin="0s"/>
+          <animate attributeName="opacity" values="1;0" dur="3s" repeatCount="indefinite" begin="0s"/>
+        </text>
+        <text x="60" y="105" text-anchor="middle" font-size="9" fill="#6b7494" font-family="monospace">
+          "I need a tracker"
+          <animate attributeName="x" values="60;180" dur="3s" repeatCount="indefinite" begin="0s"/>
+          <animate attributeName="opacity" values="0.8;0" dur="3s" repeatCount="indefinite" begin="0s"/>
+        </text>
+      </g>
+
+      <g class="idea-group-2">
+        <circle cx="60" cy="140" r="28" fill="#1a1e2e" stroke="#4FC3F7" stroke-width="1.5" opacity="0">
+          <animate attributeName="cx" values="60;180" dur="3s" repeatCount="indefinite" begin="1s"/>
+          <animate attributeName="opacity" values="0;0.9;0" dur="3s" repeatCount="indefinite" begin="1s"/>
+        </circle>
+        <text x="60" y="145" text-anchor="middle" font-size="18" fill="#4FC3F7" opacity="0">
+          🧠
+          <animate attributeName="x" values="60;180" dur="3s" repeatCount="indefinite" begin="1s"/>
+          <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite" begin="1s"/>
+        </text>
+        <text x="60" y="185" text-anchor="middle" font-size="9" fill="#6b7494" font-family="monospace" opacity="0">
+          "An invoice tool"
+          <animate attributeName="x" values="60;180" dur="3s" repeatCount="indefinite" begin="1s"/>
+          <animate attributeName="opacity" values="0;0.8;0" dur="3s" repeatCount="indefinite" begin="1s"/>
+        </text>
+      </g>
+
+      <g class="idea-group-3">
+        <circle cx="60" cy="100" r="28" fill="#1a1e2e" stroke="#4FC3F7" stroke-width="1.5" opacity="0">
+          <animate attributeName="cx" values="60;180" dur="3s" repeatCount="indefinite" begin="2s"/>
+          <animate attributeName="opacity" values="0;0.9;0" dur="3s" repeatCount="indefinite" begin="2s"/>
+        </circle>
+        <text x="60" y="105" text-anchor="middle" font-size="18" fill="#4FC3F7" opacity="0">
+          ✨
+          <animate attributeName="x" values="60;180" dur="3s" repeatCount="indefinite" begin="2s"/>
+          <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite" begin="2s"/>
+        </text>
+        <text x="60" y="145" text-anchor="middle" font-size="9" fill="#6b7494" font-family="monospace" opacity="0">
+          "A client portal"
+          <animate attributeName="x" values="60;180" dur="3s" repeatCount="indefinite" begin="2s"/>
+          <animate attributeName="opacity" values="0;0.8;0" dur="3s" repeatCount="indefinite" begin="2s"/>
+        </text>
+      </g>
+
+      <!-- The box / AI engine -->
+      <rect x="200" y="40" width="180" height="120" rx="16" fill="#1A1A2E" stroke="#4FC3F7" stroke-width="2"/>
+      <text x="290" y="88" text-anchor="middle" font-size="28" fill="#4FC3F7">🤖</text>
+      <text x="290" y="115" text-anchor="middle" font-size="11" fill="#4FC3F7" font-family="monospace" font-weight="bold">AINKLE AI</text>
+      <text x="290" y="132" text-anchor="middle" font-size="9" fill="#6b7494" font-family="monospace">building...</text>
+      <!-- Pulse ring -->
+      <circle cx="290" cy="100" r="65" fill="none" stroke="#4FC3F7" stroke-width="1" opacity="0.15">
+        <animate attributeName="r" values="65;80" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.15;0" dur="2s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- Apps coming out -->
+      <g>
+        <rect x="420" y="32" width="80" height="56" rx="10" fill="#1a1e2e" stroke="#4FC3F7" stroke-width="1.5" opacity="0">
+          <animate attributeName="x" values="380;500" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+          <animate attributeName="opacity" values="0;0.9;0.9;0" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+        </rect>
+        <text x="460" y="58" text-anchor="middle" font-size="18" fill="#4FC3F7" opacity="0">
+          📊
+          <animate attributeName="x" values="420;540" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+          <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+        </text>
+        <text x="460" y="100" text-anchor="middle" font-size="9" fill="#4ecb71" font-family="monospace" font-weight="bold" opacity="0">
+          ✓ Dashboard
+          <animate attributeName="x" values="420;540" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+          <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+        </text>
+      </g>
+
+      <g>
+        <rect x="420" y="110" width="80" height="56" rx="10" fill="#1a1e2e" stroke="#4FC3F7" stroke-width="1.5" opacity="0">
+          <animate attributeName="x" values="380;520" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+          <animate attributeName="opacity" values="0;0.9;0.9;0" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+        </rect>
+        <text x="460" y="136" text-anchor="middle" font-size="18" fill="#4FC3F7" opacity="0">
+          🗂️
+          <animate attributeName="x" values="420;560" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+          <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+        </text>
+        <text x="460" y="178" text-anchor="middle" font-size="9" fill="#4ecb71" font-family="monospace" font-weight="bold" opacity="0">
+          ✓ CRM Tool
+          <animate attributeName="x" values="420;560" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+          <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+        </text>
+      </g>
+
+      <g>
+        <rect x="420" y="70" width="80" height="56" rx="10" fill="#1a1e2e" stroke="#4FC3F7" stroke-width="1.5" opacity="0">
+          <animate attributeName="x" values="380;530" dur="3s" repeatCount="indefinite" begin="2.5s"/>
+          <animate attributeName="opacity" values="0;0.9;0.9;0" dur="3s" repeatCount="indefinite" begin="2.5s"/>
+        </rect>
+        <text x="460" y="96" text-anchor="middle" font-size="18" fill="#4FC3F7" opacity="0">
+          📋
+          <animate attributeName="x" values="420;550" dur="3s" repeatCount="indefinite" begin="2.5s"/>
+          <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="2.5s"/>
+        </text>
+        <text x="460" y="138" text-anchor="middle" font-size="9" fill="#4ecb71" font-family="monospace" font-weight="bold" opacity="0">
+          ✓ Tracker
+          <animate attributeName="x" values="420;550" dur="3s" repeatCount="indefinite" begin="2.5s"/>
+          <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="2.5s"/>
+        </text>
+      </g>
+
+      <!-- Labels -->
+      <text x="60" y="195" text-anchor="middle" font-size="10" fill="#6b7494" font-family="monospace">Your ideas</text>
+      <text x="290" y="195" text-anchor="middle" font-size="10" fill="#6b7494" font-family="monospace">Ainkle AI</text>
+      <text x="510" y="195" text-anchor="middle" font-size="10" fill="#6b7494" font-family="monospace">Your app</text>
+
+      <!-- Arrows -->
+      <path d="M92 100 L195 100" stroke="#4FC3F7" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.4" marker-end="url(#arr)"/>
+      <path d="M383 100 L415 100" stroke="#4FC3F7" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.4" marker-end="url(#arr)"/>
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#4FC3F7" stroke-width="2"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</div>
+
+<div class="divider-line"></div>
+
+<!-- ── HOW IT WORKS EXPANDED ── -->
+<div class="landing-section">
+  <div class="section-tag">The process</div>
+  <div class="landing-h2">Simple steps.<br/><em>Real results.</em></div>
+  <div class="landing-sub">No technical knowledge needed. No dev team required. Just tell us what you need.</div>
+  <div class="hiw-grid">
+    <div class="hiw-card">
+      <div class="hiw-num">01 — Describe</div>
+      <div class="hiw-title">Tell us what you need</div>
+      <div class="hiw-desc">Have a conversation with our AI consultant. Describe your idea in plain English — no jargon, no specs, no wireframes needed.</div>
+      <div class="hiw-detail">
+        <div class="hiw-detail-item">Takes 5-10 minutes</div>
+        <div class="hiw-detail-item">AI asks smart clarifying questions</div>
+        <div class="hiw-detail-item">Upload any existing docs or spreadsheets</div>
+      </div>
+    </div>
+    <div class="hiw-card">
+      <div class="hiw-num">02 — Quote</div>
+      <div class="hiw-title">Get an instant custom quote</div>
+      <div class="hiw-desc">Our AI analyzes your requirements and generates a transparent, itemized quote. No sales calls, no waiting, no surprises.</div>
+      <div class="hiw-detail">
+        <div class="hiw-detail-item">Instant — generated in seconds</div>
+        <div class="hiw-detail-item">One-time setup fee + monthly subscription</div>
+        <div class="hiw-detail-item">No payment until you approve</div>
+      </div>
+    </div>
+    <div class="hiw-card">
+      <div class="hiw-num">03 — Build</div>
+      <div class="hiw-title">We build your MVP</div>
+      <div class="hiw-desc">Our team uses AI to build your working app in days, not months. Every app goes through QA review before you ever see it.</div>
+      <div class="hiw-detail">
+        <div class="hiw-detail-item">Delivered in 3–5 business days</div>
+        <div class="hiw-detail-item">QA tested before delivery</div>
+        <div class="hiw-detail-item">Request revisions — we'll rebuild</div>
+      </div>
+    </div>
+    <div class="hiw-card">
+      <div class="hiw-num">04 — Launch</div>
+      <div class="hiw-title">Approve it, we host it</div>
+      <div class="hiw-desc">Review your app, approve it, and we get it live on your own URL. Ongoing support and updates included every month.</div>
+      <div class="hiw-detail">
+        <div class="hiw-detail-item">Your own URL with SSL</div>
+        <div class="hiw-detail-item">Monthly updates and support included</div>
+        <div class="hiw-detail-item">Cancel anytime, no contracts</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider-line"></div>
+
+<!-- ── PRICING MODEL ── -->
+<div class="landing-section" id="pricing">
+  <div class="section-tag">Pricing</div>
+  <div class="landing-h2">Transparent.<br/><em>Fair.</em> Custom.</div>
+  <div class="landing-sub">Every app is different, so every quote is custom. Our AI generates your price instantly based on what you actually need — no guessing, no negotiating.</div>
+  <div class="pricing-model-grid">
+    <div class="pm-card">
+      <div class="pm-icon">💬</div>
+      <div class="pm-title">Free consultation</div>
+      <div class="pm-desc">The entire consultation and quote process is completely free. No payment, no commitment, no credit card until you approve your app.</div>
+    </div>
+    <div class="pm-card featured">
+      <div class="pm-icon">🔨</div>
+      <div class="pm-title">One-time setup fee</div>
+      <div class="pm-desc">A single upfront fee covers the full build — design, development, QA review, and delivery. Your AI-generated quote tells you exactly what this costs before you commit.</div>
+    </div>
+    <div class="pm-card">
+      <div class="pm-icon">🔄</div>
+      <div class="pm-title">Monthly subscription</div>
+      <div class="pm-desc">Covers hosting, SSL, ongoing support, and updates. Cancel anytime — no long-term contracts. Your subscription starts only after you approve your app.</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider-line"></div>
+
+<!-- ── FOUNDING 50 ── -->
+<div class="founding-section">
+  <div class="founding-tag">⭐ Limited time offer</div>
+  <div class="landing-h2" style="margin-bottom:8px">Founding <em>50</em></div>
+  <div class="landing-sub" style="margin:0 auto 24px;text-align:center">Be one of our first 50 customers and get your setup fee completely waived — forever. You only pay the monthly subscription.</div>
+  <div class="founding-counter" id="founding-remaining">--</div>
+  <div class="founding-label" id="founding-label">spots remaining</div>
+  <div class="founding-bar-track">
+    <div class="founding-bar-fill" id="founding-bar" style="width:0%"></div>
+  </div>
+  <button class="cta-big" onclick="startApp()" style="margin:0 auto">✦ Claim your spot — it's free</button>
+</div>
+
+<div class="divider-line"></div>
+
+<!-- ── PORTFOLIO ── -->
+<div class="landing-section">
+  <div class="section-tag">Our work</div>
+  <div class="landing-h2">Apps we've <em>built.</em></div>
+  <div class="landing-sub">Every app is custom built for the customer's specific needs. Here are some examples.</div>
+  <div class="portfolio-grid">
+    <div class="portfolio-card">
+      <div class="portfolio-placeholder">
+        <div class="icon">🖼️</div>
+        <div>Coming soon</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="portfolio-placeholder">
+        <div class="icon">🖼️</div>
+        <div>Coming soon</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="portfolio-placeholder">
+        <div class="icon">🖼️</div>
+        <div>Coming soon</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider-line"></div>
+
+<!-- ── CONTACT ── -->
+<div class="landing-section" id="contact">
+  <div class="section-tag">Get in touch</div>
+  <div class="landing-h2">Questions?<br/><em>We've got answers.</em></div>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p>Not ready to start a project yet? Have questions about pricing, what we build, or how it all works? Drop us a message and we'll get back to you within 1 business day.</p>
+      <div class="contact-detail">📧 <a href="mailto:hello@ainkle.com">hello@ainkle.com</a></div>
+      <div class="contact-detail">⚡ Or just <a href="#" onclick="startApp();return false">start the free consultation</a> — it takes 5 minutes</div>
+    </div>
+    <div class="contact-form-card">
+      <h3>Send a message</h3>
+      <p>We'll reply within 1 business day.</p>
+      <div id="contact-form-body">
+        <div class="cf-row">
+          <div class="cf-group"><label>Name</label><input type="text" id="cf-name" placeholder="Jane Smith"/></div>
+          <div class="cf-group"><label>Email</label><input type="email" id="cf-email" placeholder="jane@company.com"/></div>
+        </div>
+        <div class="cf-group" style="margin-bottom:14px"><label>Subject</label>
+          <select id="cf-subject">
+            <option value="">Select a topic...</option>
+            <option>General question</option>
+            <option>Pricing inquiry</option>
+            <option>What can you build?</option>
+            <option>Technical question</option>
+            <option>Partnership</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="cf-group" style="margin-bottom:14px"><label>Message</label><textarea id="cf-message" placeholder="Tell us what's on your mind..."></textarea></div>
+        <button class="cf-submit" onclick="submitContact()">Send message →</button>
+      </div>
+      <div class="cf-success" id="cf-success">✓ Message sent! We'll be in touch soon.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">
+    <svg width="20" height="20" viewBox="0 0 48 48" fill="none">
+      <rect width="48" height="48" rx="12" fill="#1A1A2E"/>
+      <path d="M18 12 L18 28 Q18 36 26 36 L34 36" stroke="#4FC3F7" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="18" cy="12" r="3" fill="#4FC3F7"/>
+    </svg>
+    <span style="color:#4FC3F7">AI</span>nkle
+  </div>
+  <div class="footer-links">
+    <a href="#how-it-works">How it works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+    <a href="#">Privacy policy</a>
+    <a href="#">Terms of service</a>
+  </div>
+  <div class="footer-copy">© 2026 Ainkle. All rights reserved.</div>
+</footer>
 
 <div id="app" style="display:none">
 <section>
@@ -305,6 +730,52 @@ Produce this EXACT output:
 Then write 2 warm sentences confirming the quote is ready to review.`;
 
 window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40));
+
+// ── FOUNDING 50 ──
+async function loadFoundingCounter(){
+  try{
+    const{count}=await sb.from('projects').select('*',{count:'exact',head:true}).in('status',['approved','live']);
+    const taken=count||0;
+    const total=50;
+    const remaining=Math.max(0,total-taken);
+    const pct=Math.min(100,Math.round(taken/total*100));
+    const el=document.getElementById('founding-remaining');
+    const lbl=document.getElementById('founding-label');
+    const bar=document.getElementById('founding-bar');
+    if(el)el.textContent=remaining;
+    if(lbl)lbl.textContent=remaining===0?'All spots claimed — join the waitlist':'spots remaining of 50';
+    if(bar)bar.style.width=pct+'%';
+    if(remaining===0&&el)el.style.color='var(--muted)';
+  }catch(e){
+    const el=document.getElementById('founding-remaining');
+    if(el)el.textContent='50';
+  }
+}
+loadFoundingCounter();
+
+// ── CONTACT FORM ──
+async function submitContact(){
+  const name=document.getElementById('cf-name').value.trim();
+  const email=document.getElementById('cf-email').value.trim();
+  const subject=document.getElementById('cf-subject').value;
+  const message=document.getElementById('cf-message').value.trim();
+  if(!name||!email||!message){showToast('Please fill in all fields');return}
+  if(!email.includes('@')){showToast('Please enter a valid email');return}
+  try{
+    await fetch(EDGE_FN_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        _action:'send_email',
+        to:'aiai.admin@gmail.com',
+        subject:'Ainkle contact: '+(subject||'General inquiry'),
+        html:'<h2>Contact form</h2><p><strong>Name:</strong> '+name+'</p><p><strong>Email:</strong> '+email+'</p><p><strong>Subject:</strong> '+(subject||'Not specified')+'</p><hr/><p>'+message+'</p>'
+      })
+    });
+    document.getElementById('contact-form-body').style.display='none';
+    document.getElementById('cf-success').style.display='block';
+  }catch(e){showToast('Error sending. Please email hello@ainkle.com directly.');}
+}
 
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000)}
 function showSaving(v){document.getElementById('saving-overlay').classList.toggle('active',v)}
