@@ -962,13 +962,19 @@ function afterUpload(){
   showQuote(state.quote);
 }
 
-function showQuote(a){
+async function showQuote(a){
   setProgress(95);clearQR();
   document.getElementById('input-area').style.display='none';
   document.getElementById('upload-area').style.display='none';
   const hourlyRate=100;
-  const setupFee=Math.round(a.hours*1.5*hourlyRate);
-  const monthlyFee=Math.round(a.hours*hourlyRate*0.20);
+  const rawSetup=Math.round(a.hours*1.5*hourlyRate);
+  const monthlyFee=Math.round(a.hours*hourlyRate*0.05);
+  // Check founding 50 — auto-apply if under 50 approved/live customers
+  let setupFee=rawSetup;
+  try{
+    const{count}=await sb.from('projects').select('*',{count:'exact',head:true}).in('status',['approved','live']);
+    if((count||0)<50)setupFee=0;
+  }catch(e){setupFee=rawSetup;}
   const refId=genRef();
   state.refId=refId;state.setupFee=setupFee;state.monthlyFee=monthlyFee;
   const cc=a.complexity==='low'?'#4ecb71':a.complexity==='medium'?'#e8a628':'#e85050';
@@ -982,12 +988,12 @@ function showQuote(a){
   </div>
   <div style="font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6">${a.summary}</div>
   <div class="quote-grid">
-    <div class="qstat"><div class="qstat-label">Setup fee (one-time)</div><div class="qstat-val accent">$${setupFee.toLocaleString()}</div><div class="qstat-sub">One-time build fee</div></div>
-    <div class="qstat"><div class="qstat-label">Monthly hosting + support</div><div class="qstat-val">$${monthlyFee.toLocaleString()}<span style="font-size:14px;font-weight:400;color:var(--muted)">/mo</span></div><div class="qstat-sub">Hosting, updates &amp; support</div></div>
+    <div class="qstat"><div class="qstat-label">Setup fee (one-time)</div><div class="qstat-val accent">$${setupFee.toLocaleString()}</div><div class="qstat-sub">${setupFee===0?'Founding 50 — waived!':'One-time build fee'}</div></div>
+    <div class="qstat"><div class="qstat-label">Monthly hosting + support</div><div class="qstat-val">$${monthlyFee.toLocaleString()}<span style="font-size:14px;font-weight:400;color:var(--muted)">/mo</span></div><div class="qstat-sub">5% of base hours value</div></div>
   </div>
   <div style="margin-bottom:32px">
     <div class="breakdown-row"><span class="lbl">Estimated timeline</span><span class="val">${a.timeline}</span></div>
-    <div class="breakdown-row total"><span class="lbl">Setup fee total</span><span class="val">$${setupFee.toLocaleString()}</span></div>
+    <div class="breakdown-row total"><span class="lbl">Setup fee total</span><span class="val">${setupFee===0?'$0 — Waived':'$'+setupFee.toLocaleString()}</span></div>
   </div>
   <div class="wyg-title">What's included</div>
   <div class="wyg-list">
