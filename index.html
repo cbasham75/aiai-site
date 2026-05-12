@@ -262,6 +262,8 @@ footer{background:var(--midnight);border-top:1px solid rgba(255,255,255,.06);pad
   .footer-links{flex-wrap:wrap;justify-content:center}
   .divider-line{margin:0 20px}
   .nav-links{display:none}
+  #pricing .landing-section > div[style*="grid-template-columns:repeat(5"]{grid-template-columns:1fr 1fr!important}
+  #pricing .landing-section > div[style*="grid-template-columns:repeat(3"]{grid-template-columns:1fr!important}
 }
 @media(max-width:640px){nav{padding:16px 20px}#hero{padding:100px 20px 60px}.steps{grid-template-columns:1fr 1fr;gap:2px}.step:nth-child(2)::after{display:none}.step:nth-child(2){border-radius:0 var(--radius) 0 0}.step:nth-child(3){border-radius:0 0 0 var(--radius)}.step:last-child{border-radius:0 0 var(--radius) 0}section{padding:60px 20px}.quote-grid{grid-template-columns:1fr}.quote-header{flex-direction:column;gap:8px}.form-row{grid-template-columns:1fr}}
 </style>
@@ -514,26 +516,97 @@ footer{background:var(--midnight);border-top:1px solid rgba(255,255,255,.06);pad
 
 <div class="divider-line"></div>
 
-<!-- ── PRICING MODEL ── -->
+<!-- ── PRICING ── -->
 <div class="landing-section" id="pricing">
   <div class="section-tag">Pricing</div>
-  <div class="landing-h2">Transparent.<br/><em>Fair.</em> Custom.</div>
-  <div class="landing-sub">Every app is different, so every quote is custom. Our AI generates your price instantly based on what you actually need — no guessing, no negotiating.</div>
-  <div class="pricing-model-grid">
+  <div class="landing-h2">Simple tiers.<br/><em>Custom</em> apps.</div>
+  <div class="landing-sub">Your quote is generated instantly by AI based on what you actually need. No sales calls, no negotiating. Every plan includes everything — hosting, database, backups, SSL, support, and updates.</div>
+
+  <!-- TIER CARDS -->
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:48px;margin-bottom:48px">
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#4FC3F7"></div>
+      <div style="font-family:var(--mono);font-size:10px;color:#4FC3F7;letter-spacing:.1em;margin-bottom:8px">SPARK</div>
+      <div style="font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:4px">$9<span style="font-size:14px;font-weight:400;color:var(--muted)">/mo</span></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.5">Single-use tools, calculators, lookups. No permanent data storage.</div>
+      <div style="font-size:11px;color:var(--muted);font-family:var(--mono)">Examples: tip calculator, quote estimator, unit converter</div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#4ecb71"></div>
+      <div style="font-family:var(--mono);font-size:10px;color:#4ecb71;letter-spacing:.1em;margin-bottom:8px">BUILD</div>
+      <div style="font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:4px">$29<span style="font-size:14px;font-weight:400;color:var(--muted)">/mo</span></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.5">Single-user apps with data storage and search.</div>
+      <div style="font-size:11px;color:var(--muted);font-family:var(--mono)">Examples: inventory tracker, expense log, client list</div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid rgba(79,195,247,.3);border-radius:var(--radius);padding:24px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#e8a628"></div>
+      <div style="position:absolute;top:12px;right:12px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;background:rgba(232,166,40,.15);color:#e8a628;font-family:var(--mono)">POPULAR</div>
+      <div style="font-family:var(--mono);font-size:10px;color:#e8a628;letter-spacing:.1em;margin-bottom:8px">GROW</div>
+      <div style="font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:4px">$59<span style="font-size:14px;font-weight:400;color:var(--muted)">/mo</span></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.5">Multi-feature apps, dashboards, forms with workflows.</div>
+      <div style="font-size:11px;color:var(--muted);font-family:var(--mono)">Examples: CRM, booking system, project tracker</div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#a78bfa"></div>
+      <div style="font-family:var(--mono);font-size:10px;color:#a78bfa;letter-spacing:.1em;margin-bottom:8px">SCALE</div>
+      <div style="font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:4px">$99<span style="font-size:14px;font-weight:400;color:var(--muted)">/mo+</span></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.5">Complex apps with integrations, roles, and automation.</div>
+      <div style="font-size:11px;color:var(--muted);font-family:var(--mono)">Examples: multi-user portal, automated reporting</div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#f87171"></div>
+      <div style="font-family:var(--mono);font-size:10px;color:#f87171;letter-spacing:.1em;margin-bottom:8px">ENTERPRISE</div>
+      <div style="font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:4px">Custom</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.5">Full platforms, SaaS products, multi-tenant systems.</div>
+      <div style="font-size:11px;color:var(--muted);font-family:var(--mono)">Starting at $299/mo — custom quote</div>
+    </div>
+
+  </div>
+
+  <!-- WHAT'S INCLUDED -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;margin-bottom:32px">
+    <div style="font-size:16px;font-weight:700;margin-bottom:20px">Every plan includes</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div style="display:flex;gap:10px;font-size:13px;color:var(--muted)"><span style="color:var(--accent)">✓</span>Custom built for your exact needs</div>
+      <div style="display:flex;gap:10px;font-size:13px;color:var(--muted)"><span style="color:var(--accent)">✓</span>Your own URL with SSL certificate</div>
+      <div style="display:flex;gap:10px;font-size:13px;color:var(--muted)"><span style="color:var(--accent)">✓</span>Database storage and automatic backups</div>
+      <div style="display:flex;gap:10px;font-size:13px;color:var(--muted)"><span style="color:var(--accent)">✓</span>Secure hosted infrastructure</div>
+      <div style="display:flex;gap:10px;font-size:13px;color:var(--muted)"><span style="color:var(--accent)">✓</span>Ongoing updates and bug fixes</div>
+      <div style="display:flex;gap:10px;font-size:13px;color:var(--muted)"><span style="color:var(--accent)">✓</span>Support when you need it</div>
+      <div style="display:flex;gap:10px;font-size:13px;color:var(--muted)"><span style="color:var(--accent)">✓</span>QA tested before delivery</div>
+      <div style="display:flex;gap:10px;font-size:13px;color:var(--muted)"><span style="color:var(--accent)">✓</span>No long-term contracts</div>
+      <div style="display:flex;gap:10px;font-size:13px;color:var(--muted)"><span style="color:var(--accent)">✓</span>Cancel anytime</div>
+    </div>
+  </div>
+
+  <!-- VALUE COMPARISON -->
+  <div style="background:rgba(79,195,247,.04);border:1px solid rgba(79,195,247,.15);border-radius:var(--radius);padding:28px;text-align:center">
+    <div style="font-size:14px;color:var(--muted);margin-bottom:8px">What you'd pay to piece this together yourself</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Developer ($5k–$50k) + Hosting ($50–$200/mo) + Database ($25–$200/mo) + SSL + Backups + Support = <strong style="color:var(--red)">$500–$1,000+/mo</strong> after a massive upfront cost</div>
+    <div style="font-size:20px;font-weight:800;color:var(--accent)">Ainkle: $9–$99/mo. Everything included. No upfront cost for Founding 50.</div>
+  </div>
+
+  <!-- HOW PRICING WORKS -->
+  <div style="margin-top:32px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
     <div class="pm-card">
       <div class="pm-icon">💬</div>
       <div class="pm-title">Free consultation</div>
-      <div class="pm-desc">The entire consultation and quote process is completely free. No payment, no commitment, no credit card until you approve your app.</div>
+      <div class="pm-desc">The entire consultation and quote process is free. No payment, no commitment until you approve your app.</div>
     </div>
     <div class="pm-card featured">
       <div class="pm-icon">🔨</div>
-      <div class="pm-title">One-time setup fee</div>
-      <div class="pm-desc">A single upfront fee covers the full build — design, development, QA review, and delivery. Your AI-generated quote tells you exactly what this costs before you commit.</div>
+      <div class="pm-title">Setup fee (waived for Founding 50)</div>
+      <div class="pm-desc">Covers the full build — design, development, QA review, and delivery. Founding 50 members pay $0 upfront.</div>
     </div>
     <div class="pm-card">
       <div class="pm-icon">🔄</div>
-      <div class="pm-title">Monthly subscription</div>
-      <div class="pm-desc">Covers hosting, SSL, ongoing support, and updates. Cancel anytime — no long-term contracts. Your subscription starts only after you approve your app.</div>
+      <div class="pm-title">Monthly plan</div>
+      <div class="pm-desc">Everything included — hosting, database, backups, SSL, support, and updates. Starts after you approve.</div>
     </div>
   </div>
 </div>
@@ -968,39 +1041,73 @@ async function showQuote(a){
   document.getElementById('upload-area').style.display='none';
   const hourlyRate=100;
   const rawSetup=Math.round(a.hours*1.5*hourlyRate);
-  const monthlyFee=Math.round(a.hours*hourlyRate*0.05);
-  // Check founding 50 — auto-apply if under 50 approved/live customers
+
+  // ── TIER DETECTION ──
+  let tier, monthlyFee, tierName, tierDesc;
+  if(a.hours<=3){
+    tier='spark';tierName='Spark';monthlyFee=9;
+    tierDesc='Single-use tool, no data storage';
+  } else if(a.hours<=10){
+    tier='build';tierName='Build';monthlyFee=29;
+    tierDesc='Single-user app with data storage';
+  } else if(a.hours<=25){
+    tier='grow';tierName='Grow';monthlyFee=59;
+    tierDesc='Multi-feature app or dashboard';
+  } else if(a.hours<=40){
+    tier='scale';tierName='Scale';monthlyFee=99;
+    tierDesc='Complex app with integrations';
+  } else {
+    tier='enterprise';tierName='Enterprise';monthlyFee=299;
+    tierDesc='Full platform — custom quote applies';
+  }
+
+  // ── FOUNDING 50 — auto-apply setup fee waiver ──
   let setupFee=rawSetup;
+  let foundingMember=false;
   try{
     const{count}=await sb.from('projects').select('*',{count:'exact',head:true}).in('status',['approved','live']);
-    if((count||0)<50)setupFee=0;
+    if((count||0)<50){setupFee=0;foundingMember=true;}
   }catch(e){setupFee=rawSetup;}
   const refId=genRef();
   state.refId=refId;state.setupFee=setupFee;state.monthlyFee=monthlyFee;
-  const cc=a.complexity==='low'?'#4ecb71':a.complexity==='medium'?'#e8a628':'#e85050';
+  state.tierName=tierName;state.tier=tier;
+  const tierColors={spark:'#4FC3F7',build:'#4ecb71',grow:'#e8a628',scale:'#a78bfa',enterprise:'#f87171'};
+  const tc=tierColors[tier]||'#4FC3F7';
   const qArea=document.getElementById('quote-area');
   qArea.style.display='block';
   qArea.innerHTML=`
 <div class="quote-card">
   <div class="quote-header">
-    <div><div class="quote-label">Your Quote</div><div class="quote-project">${a.projectName}</div></div>
-    <div style="text-align:right"><div class="quote-id">${refId}</div><div style="font-size:12px;margin-top:4px;padding:4px 10px;border-radius:20px;display:inline-block;background:${cc}22;color:${cc};font-family:var(--mono)">${a.complexity} complexity</div></div>
+    <div>
+      <div class="quote-label">Your Quote</div>
+      <div class="quote-project">${a.projectName}</div>
+      <div style="margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:${tc}18;border:1px solid ${tc}40;border-radius:100px;padding:4px 12px">
+        <span style="font-size:11px;font-weight:700;color:${tc};font-family:var(--mono)">${tierName} tier</span>
+        <span style="font-size:11px;color:var(--muted)">— ${tierDesc}</span>
+      </div>
+    </div>
+    <div style="text-align:right"><div class="quote-id">${refId}</div></div>
   </div>
   <div style="font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6">${a.summary}</div>
+  ${foundingMember?`<div style="display:flex;align-items:center;gap:8px;background:rgba(79,195,247,.08);border:1px solid rgba(79,195,247,.2);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:13px;color:var(--accent)">&#11088; Founding member offer applied — setup fee waived forever</div>`:''}
+  ${tier==='enterprise'?`<div style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#f87171">&#9888; This is a complex platform build. The price below is a starting point — our team will reach out to discuss a custom quote tailored to your exact needs.</div>`:''}
   <div class="quote-grid">
-    <div class="qstat"><div class="qstat-label">Setup fee (one-time)</div><div class="qstat-val accent">$${setupFee.toLocaleString()}</div><div class="qstat-sub">${setupFee===0?'Founding 50 — waived!':'One-time build fee'}</div></div>
-    <div class="qstat"><div class="qstat-label">Monthly hosting + support</div><div class="qstat-val">$${monthlyFee.toLocaleString()}<span style="font-size:14px;font-weight:400;color:var(--muted)">/mo</span></div><div class="qstat-sub">5% of base hours value</div></div>
+    <div class="qstat"><div class="qstat-label">Setup fee (one-time)</div><div class="qstat-val accent">${setupFee===0?'$0':'$'+setupFee.toLocaleString()}</div><div class="qstat-sub">${setupFee===0?'&#11088; Founding 50 — waived!':'One-time build &amp; delivery fee'}</div></div>
+    <div class="qstat"><div class="qstat-label">Monthly — ${tierName} plan</div><div class="qstat-val">$${monthlyFee}<span style="font-size:14px;font-weight:400;color:var(--muted)">/mo</span></div><div class="qstat-sub">${tier==='enterprise'?'Starting price — custom quote follows':'Hosting, support &amp; updates included'}</div></div>
   </div>
-  <div style="margin-bottom:32px">
+  <div style="margin-bottom:24px">
     <div class="breakdown-row"><span class="lbl">Estimated timeline</span><span class="val">${a.timeline}</span></div>
-    <div class="breakdown-row total"><span class="lbl">Setup fee total</span><span class="val">${setupFee===0?'$0 — Waived':'$'+setupFee.toLocaleString()}</span></div>
+    <div class="breakdown-row total"><span class="lbl">Setup fee total</span><span class="val">${setupFee===0?'$0 — Waived &#11088;':'$'+setupFee.toLocaleString()}</span></div>
   </div>
+  
   <div class="wyg-title">What's included</div>
   <div class="wyg-list">
-    ${(a.deliverables||[]).map(d=>`<div class="wyg-item">${d}</div>`).join('')}
+    ${(a.deliverables||[]).map(d=>'<div class="wyg-item">'+d+'</div>').join('')}
     <div class="wyg-item">Working MVP delivered in ${a.timeline} for your review and feedback</div>
     <div class="wyg-item">Hosted on your own URL with SSL certificate</div>
-    <div class="wyg-item">Ongoing support &amp; updates included in monthly fee</div>
+    <div class="wyg-item">Database storage, backups and security included</div>
+    <div class="wyg-item">Ongoing support &amp; updates included in monthly plan</div>
+    <div class="wyg-item">Cancel anytime — no long-term contracts</div>
   </div>
   <button class="proceed-btn" id="proceed-btn" onclick="proceed()">
     <span style="font-size:24px">🤖</span>
@@ -1015,7 +1122,7 @@ async function proceed(){
   document.getElementById('proceed-btn').disabled=true;
   showSaving(true);
   try{
-    const {data,error}=await sb.from('projects').insert([{
+    const{data,error}=await sb.from('projects').insert([{
       customer_name:state.customer.name,
       customer_email:state.customer.email,
       customer_phone:state.customer.phone||null,
@@ -1033,7 +1140,6 @@ async function proceed(){
       uploaded_files:state.uploadedFiles.map(f=>({name:f.name,size:f.size,type:f.type}))
     }]).select();
     if(error)throw error;
-    // Save messages
     for(const msg of state.messages){
       await sb.from('messages').insert([{project_id:data[0].id,sender:msg.role==='user'?'customer':'ainkle',content:msg.content}]);
     }
