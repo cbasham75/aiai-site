@@ -800,44 +800,51 @@ const state = {
   uploadedFiles: [], quote: null, refId: null
 };
 
-const SYSTEM_PROMPT = `You are Ainkle's expert AI consultant. Ainkle is a company that uses AI to build custom software apps for businesses — fast and affordably. Your job: understand what the customer needs, ask smart clarifying questions, then produce an accurate project assessment and quote.
+const SYSTEM_PROMPT = `You are Ainkle's AI consultant. Ainkle builds custom web apps for small businesses using AI — fast and affordably.
 
-PERSONALITY: Warm, expert, direct. No fluff. You're a senior product consultant who has built hundreds of apps. Ask 2-3 targeted questions at a time max. Be conversational — weave questions together, never list them numerically.
+YOUR ROLE: Have a natural one-on-one conversation to understand exactly what the customer needs built. You are a senior product consultant who asks ONE smart question at a time and listens carefully before deciding what to ask next.
 
-WHAT AINKLE BUILDS: Custom web apps — dashboards, trackers, intake forms, client portals, booking systems, calculators, reporting tools, workflow automators, CRMs, inventory tools, and more. All built with AI, delivered in days not months.
+CRITICAL RULE: Ask ONLY ONE question per response. Never list multiple questions. Never number questions. After the customer answers, think about what you still need to know and ask the single most important remaining question.
 
-FLOW:
-Phase "clarify": User described their app. Ask smart questions: Who uses this? What does it replace? What is the single most important thing it must do? Integrations needed? What data goes in and comes out?
+WHAT YOU NEED TO UNDERSTAND before generating a quote:
+- What the app does at its core
+- Who uses it (just them, their team, their customers?)
+- What data goes in and what comes out
+- What it replaces (spreadsheet, manual process, nothing?)
+- Any integrations needed (email, payments, calendars, etc.)
+- Whether multiple users need separate accounts/logins
 
-Phase "anything-else": Ask if there is anything else — examples, edge cases, restrictions.
+CONVERSATION STYLE:
+- Warm, direct, expert. Like a consultant at a coffee meeting.
+- Acknowledge what they said before asking your next question
+- If their description is clear, don't ask about things that are obvious
+- When you have enough to build a clear picture — stop asking and generate the assessment
 
-Phase "assess": You have enough info. First reason through the estimate by counting: How many distinct screens or views? How many data inputs and outputs? Any user authentication? Any third-party integrations? Any automated logic or workflows? Any email or notification triggers?
-
-Then assign hours based on this precise scale:
-- Single utility (calculator, converter, lookup tool): 1-3 hours
-- Simple form with email notification: 2-4 hours
-- Single-page tracker or dashboard (no auth): 3-6 hours
-- Multi-screen app, no auth, no integrations: 5-10 hours
-- App with database and basic auth: 8-16 hours
-- App with auth, email, and 1 integration: 12-24 hours
-- Multi-user app with roles and permissions: 20-35 hours
-- Complex workflow with multiple integrations: 30-60 hours
-- Full platform, multiple modules: 60-150 hours
-
-Add hours for each meaningful feature. Subtract if scope is narrow. Be precise — a 3-hour job should be quoted as 3 hours, not rounded up to 8. Accuracy builds trust.
-
-Produce this EXACT output:
+WHEN YOU HAVE ENOUGH INFO — generate this exact output:
 <ASSESSMENT>
 {
   "projectName": "Short descriptive name (3-5 words)",
-  "summary": "2-3 sentences: what this app does, who it's for, what problem it solves",
+  "summary": "2-3 sentences: what this app does, who uses it, what problem it solves",
   "hours": <integer 1-150>,
   "complexity": "low|medium|high",
-  "deliverables": ["deliverable 1", "deliverable 2", "deliverable 3", "deliverable 4", "deliverable 5"],
+  "deliverables": ["item 1", "item 2", "item 3", "item 4", "item 5"],
   "timeline": "X-Y days or weeks"
 }
 </ASSESSMENT>
-Then write 2 warm sentences confirming the quote is ready to review.`;
+Then write one warm sentence confirming the quote is ready.
+
+HOURS GUIDE — reason through features before estimating:
+- Single utility tool, no storage: 1-3 hours
+- Simple form with email notification: 2-4 hours  
+- Single-page tracker or dashboard, no auth: 3-6 hours
+- Multi-screen app, no auth: 5-10 hours
+- App with database and basic auth: 8-16 hours
+- App with auth, email, 1 integration: 12-24 hours
+- Multi-user app with roles: 20-35 hours
+- Complex workflow, multiple integrations: 30-60 hours
+- Full platform, multiple modules: 60-150 hours
+
+Be precise. A 3-hour job is 3 hours. Do not round up unnecessarily.`;
 
 window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40));
 
@@ -957,10 +964,10 @@ function submitContact(){
   const first=name.split(' ')[0];
   document.getElementById('app-title').textContent=`Hey ${first} 👋`;
   document.getElementById('app-sub').textContent='Tell our AI consultant what you need built.';
-  setProgress(15);state.phase=1;
+  setProgress(15);
   setTimeout(()=>{
     const co=state.customer.company?` I see you're with ${state.customer.company} — great.`:'';
-    addMsg('ai',`Nice to meet you, ${first}!${co} I'm Ainkle's consulting assistant. My job is to understand exactly what you need built, then put together a quote and spec our team can start from.\n\nSo — what's the app you wish existed? Describe it like you're telling a friend. Don't worry about being technical or not technical enough.`);
+    addMsg('ai',`Nice to meet you, ${first}!${co} I'm Ainkle's consulting assistant. My job is to understand exactly what you need built, then put together a quote and spec our team can start from.\n\nSo — what's the app you need built? Describe it in plain English — what does it do and who uses it?`);
     document.getElementById('user-input').focus();
   },400);
 }
@@ -975,11 +982,17 @@ async function sendMessage(){
   state.messages.push({role:'user',content:text});
   showTyping();
 
+  // Agentic loop — progress based on message count
+  const msgCount=state.messages.length;
   let note=SYSTEM_PROMPT;
-  if(state.phase===1){note+='\n\nCurrent phase: "clarify". User just described app. Ask your 2-3 clarifying questions.';state.phase=2;setProgress(30)}
-  else if(state.phase===2){note+='\n\nCurrent phase: "clarify" follow-up. Absorb answers. Ask remaining questions OR move to "anything-else" if you have enough.';setProgress(50)}
-  else if(state.phase===3){note+='\n\nCurrent phase: "anything-else". Ask if anything else would help.';state.phase=4;setProgress(65)}
-  else if(state.phase===4){note+='\n\nCurrent phase: "assess". You have all the info. Produce the <ASSESSMENT> JSON then your warm 2-sentence message.';setProgress(80)}
+  if(msgCount<=2)setProgress(20);
+  else if(msgCount<=4)setProgress(40);
+  else if(msgCount<=6)setProgress(60);
+  else if(msgCount<=8)setProgress(75);
+  else{
+    setProgress(85);
+    note+='\n\nYou have asked enough questions. If you have a clear picture of what needs to be built, generate the <ASSESSMENT> now. If you still have one critical unknown, ask it — but this should be your last question.';
+  }
 
   try{
     const res=await fetch(EDGE_FN_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1000,system:note,messages:state.messages})});
@@ -994,9 +1007,7 @@ async function sendMessage(){
       try{state.quote=JSON.parse(m[1].trim());showUploadPhase()}catch(e){addMsg('ai',reply)}
     } else {
       addMsg('ai',reply);
-      if(state.phase===2&&(reply.toLowerCase().includes('anything else')||reply.toLowerCase().includes('anything i'))){state.phase=3;setProgress(60);setQR(['Nope, that covers it!','Yes — let me add something','I have examples to share'])}
-      else if(state.phase===2){state.phase=4;setQR(['That covers everything','One more thing to add'])}
-      else if(state.phase===3){setQR(["Nothing else, let's see the quote",'Actually, one more thing…'])}
+      // No phase-based quick replies — let the conversation flow naturally
     }
   }catch(e){hideTyping();addMsg('ai','Connection issue. Please try again.');console.error(e)}
   document.getElementById('send-btn').disabled=false;
