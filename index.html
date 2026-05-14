@@ -775,15 +775,19 @@ footer{background:var(--midnight);border-top:1px solid rgba(255,255,255,.06);pad
 <div id="submitted">
   <div class="success-ring">🤖</div>
   <div class="success-title">You're in the queue.</div>
-  <div class="success-sub">Our team has your brief and will have a working prototype ready for your review within 3–5 business days. We'll email you at <strong id="confirm-email"></strong> when it's ready.</div>
+  <div class="success-sub">Our team has your brief and will have a working prototype ready for your review within 3–5 business days. We also sent a portal login link to <strong id="confirm-email"></strong> so you can track your project.</div>
+  <div style="margin:16px 0">
+    <a href="https://my.ainkle.com" style="display:inline-block;padding:12px 28px;background:var(--accent);color:#0d0f1a;border-radius:10px;font-weight:700;text-decoration:none;font-size:14px">Visit my portal →</a>
+  </div>
   <div class="ref-box" id="ref-code">ANK-XXXX</div>
   <div class="next-steps">
     <h4>What happens next</h4>
-    <div class="ns-item"><div class="ns-dot">1</div><span>Our team reviews your brief and confirms the quote by email within 1 business day</span></div>
-    <div class="ns-item"><div class="ns-dot">2</div><span>We build your MVP — a fully working version of your app</span></div>
-    <div class="ns-item"><div class="ns-dot">3</div><span>Your app is sent to our QA auditor for testing and final review before you ever see it</span></div>
-    <div class="ns-item"><div class="ns-dot">4</div><span>You get a private link to review, test, and approve</span></div>
-    <div class="ns-item"><div class="ns-dot">5</div><span>Once approved, we launch it live on your own URL</span></div>
+    <div class="ns-item"><div class="ns-dot">1</div><span>Check your email — we just sent a link to access your Ainkle portal where you can track everything</span></div>
+    <div class="ns-item"><div class="ns-dot">2</div><span>Our team reviews your brief and confirms the quote within 1 business day</span></div>
+    <div class="ns-item"><div class="ns-dot">3</div><span>We build your MVP — a fully working version of your app</span></div>
+    <div class="ns-item"><div class="ns-dot">4</div><span>Your app is sent to our QA auditor for testing and final review</span></div>
+    <div class="ns-item"><div class="ns-dot">5</div><span>You get a private link to review, test, and approve</span></div>
+    <div class="ns-item"><div class="ns-dot">6</div><span>Once approved, we launch it live on your own URL</span></div>
   </div>
   <div style="margin-top:40px"><button class="btn-ghost" onclick="location.reload()">← Start a new project</button></div>
 </div>
@@ -953,11 +957,40 @@ function startApp(){
   setTimeout(()=>document.getElementById('input-name').focus(),100);
 }
 
-function submitContact(){
+async function submitContact(){
   const name=document.getElementById('input-name').value.trim();
   const email=document.getElementById('input-email').value.trim();
   if(!name){showToast('Please enter your name');return}
   if(!email||!email.includes('@')){showToast('Please enter a valid email address');return}
+
+  // Check if returning customer
+  const{data:existing}=await sb.from('projects').select('customer_name,ref_code').eq('customer_email',email).limit(1);
+  if(existing&&existing.length>0){
+    // Returning customer — show welcome back screen
+    document.getElementById('contact-form').style.display='none';
+    document.getElementById('app-title').textContent='Welcome back!';
+    document.getElementById('app-sub').textContent='';
+    document.getElementById('chat-section').style.display='block';
+    addMsg('ai','Hey '+name.split(' ')[0]+'! It looks like you already have an Ainkle account. Head to your portal to manage your existing apps or start a new project from there.\n\nWe have sent a login link to '+email+' — click it to access your portal.');
+    // Send magic link
+    await sb.auth.signInWithOtp({email,options:{emailRedirectTo:'https://my.ainkle.com'}});
+    setProgress(100);
+    // Show portal button
+    setTimeout(()=>{
+      const chat=document.getElementById('chat');
+      const d=document.createElement('div');
+      d.style='text-align:center;margin-top:16px';
+      d.innerHTML='<a href="https://my.ainkle.com" style="display:inline-block;padding:12px 28px;background:var(--accent);color:#0d0f1a;border-radius:10px;font-weight:700;text-decoration:none;font-size:14px">Go to my portal →</a>';
+      chat.appendChild(d);
+    },1000);
+    return;
+  }
+
+  // Save to leads table
+  try{
+    await sb.from('leads').upsert([{name,email,phone:document.getElementById('input-phone').value.trim()||null,company:document.getElementById('input-company').value.trim()||null}],{onConflict:'email'});
+  }catch(e){console.warn('Lead save failed:',e)}
+
   state.customer={name,email,phone:document.getElementById('input-phone').value.trim(),company:document.getElementById('input-company').value.trim()};
   document.getElementById('contact-form').style.display='none';
   document.getElementById('chat-section').style.display='block';
@@ -1174,6 +1207,17 @@ async function proceed(){
         })
       });
     }catch(emailErr){console.warn('Email notification failed:',emailErr)}
+    // Create Supabase account and send magic link
+    try{
+      await sb.auth.signInWithOtp({
+        email:state.customer.email,
+        options:{
+          emailRedirectTo:'https://my.ainkle.com',
+          data:{full_name:state.customer.name}
+        }
+      });
+    }catch(authErr){console.warn('Auth creation failed:',authErr)}
+
     showSaving(false);
     document.getElementById('app').style.display='none';
     document.getElementById('submitted').classList.add('active');
